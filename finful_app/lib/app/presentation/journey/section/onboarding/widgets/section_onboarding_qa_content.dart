@@ -1,4 +1,3 @@
-
 import 'package:finful_app/app/constants/key/BlocConstants.dart';
 import 'package:finful_app/app/data/enum/section.dart';
 import 'package:finful_app/app/data/model/response/section_response.dart';
@@ -9,6 +8,7 @@ import 'package:finful_app/app/presentation/widgets/app_image/FinfulImage.dart';
 import 'package:finful_app/app/presentation/widgets/app_input/FinfulTextInput.dart';
 import 'package:finful_app/app/presentation/widgets/section/section_option_card.dart';
 import 'package:finful_app/app/presentation/widgets/section/section_qa_content_loading.dart';
+import 'package:finful_app/app/presentation/widgets/section/section_question_text.dart';
 import 'package:finful_app/app/theme/theme.dart';
 import 'package:finful_app/common/constants/dimensions.dart';
 import 'package:finful_app/core/bloc/base/bloc_manager.dart';
@@ -71,11 +71,8 @@ class SectionOnboardingQAContent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Dimens.p_34),
-          Text(
-            questionTxt,
-            style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontWeight: FontWeight.w400,
-            ),
+          SectionQuestionText(
+            value: questionTxt,
           ),
           const SizedBox(height: Dimens.p_34),
           FinfulTextInput.single(
@@ -126,11 +123,8 @@ class SectionOnboardingQAContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            questionTxt,
-            style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontWeight: FontWeight.w400,
-            ),
+          SectionQuestionText(
+            value: questionTxt,
           ),
           const SizedBox(height: Dimens.p_25),
           if (listOption.isNotEmpty)

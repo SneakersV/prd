@@ -40,7 +40,7 @@ class GetSectionProgressBloc extends BaseBloc<GetSectionProgressEvent, GetSectio
         blocKey: key,
         event: BlocBroadcastEventConstants.justGetSectionProgressRequired,
         onNext: (data) {
-          addLater(GetSectionProgressGetCurrentStarted());
+          add(GetSectionProgressGetCurrentStarted());
         },
       ),
     ];

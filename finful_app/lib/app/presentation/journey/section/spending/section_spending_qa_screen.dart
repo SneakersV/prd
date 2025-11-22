@@ -241,7 +241,7 @@ class _SectionSpendingQAScreenState extends State<SectionSpendingQAScreen>
           backgroundColor: Colors.transparent,
           forceMaterialTransparency: true,
           title: L10n.of(context)
-              .translate('section_familySupport_qa_header_title'),
+              .translate('section_spending_qa_header_title'),
           titleStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(
             fontWeight: FontWeight.w500,
           ),

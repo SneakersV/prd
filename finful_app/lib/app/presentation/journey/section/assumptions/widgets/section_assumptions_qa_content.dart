@@ -6,6 +6,7 @@ import 'package:finful_app/app/presentation/blocs/section/assumptions/assumption
 import 'package:finful_app/app/presentation/journey/section/assumptions/widgets/section_assumptions_option_card.dart';
 import 'package:finful_app/app/presentation/widgets/app_image/FinfulImage.dart';
 import 'package:finful_app/app/presentation/widgets/section/section_qa_content_loading.dart';
+import 'package:finful_app/app/presentation/widgets/section/section_question_text.dart';
 import 'package:finful_app/app/theme/colors.dart';
 import 'package:finful_app/app/theme/dimens.dart';
 import 'package:finful_app/common/constants/dimensions.dart';
@@ -54,11 +55,8 @@ class SectionAssumptionsQAContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: Dimens.p_56),
-          Text(
-            questionTxt,
-            style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontWeight: FontWeight.w400,
-            ),
+          SectionQuestionText(
+            value: questionTxt,
           ),
           const SizedBox(height: Dimens.p_27),
           Row(
@@ -227,9 +225,9 @@ class SectionAssumptionsQAContent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Dimens.p_24),
-          Text(
-            questionTxt,
-            style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+          SectionQuestionText(
+            value: questionTxt,
+            textStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(
               height: Dimens.p_25 / Dimens.p_16,
             ),
           ),

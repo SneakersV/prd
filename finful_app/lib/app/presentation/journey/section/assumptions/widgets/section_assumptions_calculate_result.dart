@@ -144,10 +144,10 @@ class _SectionAssumptionsCalculateResultState extends State<SectionAssumptionsCa
 
   String _imagePath(AssumptionsCalculateSuccess state) {
     final caseNumber = state.calculateResult?.sectionResult?.caseNumber;
-    if (caseNumber == null) {
-      return "";
-    }
     switch (caseNumber) {
+      case null:
+      case -1:
+        return "";
       case 1:
         return ImageConstants.imgAssumptionsResultCase1;
       case 2:

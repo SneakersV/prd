@@ -135,10 +135,10 @@ class _SectionSpendingCalculateResultState extends State<SectionSpendingCalculat
 
   String _imagePath(SpendingCalculateSuccess state) {
     final caseNumber = state.calculateResult?.sectionResult?.caseNumber;
-    if (caseNumber == null) {
-      return "";
-    }
     switch (caseNumber) {
+      case null:
+      case -1:
+        return "";
       case 1:
         return ImageConstants.imgSpendingResultCase1;
       case 2:

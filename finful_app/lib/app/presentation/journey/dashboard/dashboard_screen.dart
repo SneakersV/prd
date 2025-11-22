@@ -54,17 +54,17 @@ class _DashboardScreenState extends State<DashboardScreen>
       ),
       SectionDashboardItem(
         isCompleted: false,
-        isActivated: true,
+        isActivated: false,
         sectionType: SectionType.familySupport,
       ),
       SectionDashboardItem(
         isCompleted: false,
-        isActivated: true,
+        isActivated: false,
         sectionType: SectionType.spending,
       ),
       SectionDashboardItem(
         isCompleted: false,
-        isActivated: true,
+        isActivated: false,
         sectionType: SectionType.assumptions,
       ),
     ];
@@ -213,22 +213,32 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: _mapToBlocListeners,
-      child: Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        resizeToAvoidBottomInset: true,
-        drawerEdgeDragWidth: 0.0,
-        endDrawerEnableOpenDragGesture: false,
-        drawerEnableOpenDragGesture: false,
-        body: RefreshIndicator(
-          onRefresh: _onRefresh,
-          child: !_isFinalPlan ?
-          DashboardNoneFinalPlanContent(
-            sectionItems: _sectionItems,
-            onSectionItemPressed: _onSectionItemPressed,
-            onStaticSchedulePressed: _onStaticSchedulePressed,
-          ) : Container(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<GetPlanBloc>(
+          create: (_) => GetPlanBloc.instance(),
+        ),
+        BlocProvider<GetSectionProgressBloc>(
+          create: (_) => GetSectionProgressBloc.instance(),
+        ),
+      ],
+      child: MultiBlocListener(
+        listeners: _mapToBlocListeners,
+        child: Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          resizeToAvoidBottomInset: true,
+          drawerEdgeDragWidth: 0.0,
+          endDrawerEnableOpenDragGesture: false,
+          drawerEnableOpenDragGesture: false,
+          body: RefreshIndicator(
+            onRefresh: _onRefresh,
+            child: !_isFinalPlan ?
+            DashboardNoneFinalPlanContent(
+              sectionItems: _sectionItems,
+              onSectionItemPressed: _onSectionItemPressed,
+              onStaticSchedulePressed: _onStaticSchedulePressed,
+            ) : Container(),
+          ),
         ),
       ),
     );

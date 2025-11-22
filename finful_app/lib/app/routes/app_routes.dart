@@ -97,17 +97,7 @@ class AppRoutes {
       case RouteConstant.scheduleExpert:
         return const ScheduleExpertScreen().buildPage(settings: settings);
       case RouteConstant.dashboard:
-        return MultiBlocProvider(
-            providers: [
-              BlocProvider<GetPlanBloc>(
-                create: (_) => GetPlanBloc.instance(),
-              ),
-              BlocProvider<GetSectionProgressBloc>(
-                create: (_) => GetSectionProgressBloc.instance(),
-              ),
-            ],
-            child: const DashboardScreen()
-        ).buildPage(settings: settings);
+        return const DashboardScreen().buildPage(settings: settings);
       case RouteConstant.devMode:
         return const DevModeScreen().buildPage(settings: settings);
       default:

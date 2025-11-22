@@ -45,6 +45,9 @@ class ImageConstants {
   // received request
   static const String imgReceivedRequest = 'assets/images/img_received_request.png';
 
+  // modal
+  static const String imgDefaultRequestModal = 'assets/images/img_default_request_modal.png';
+
   // bank
   static const String imgQRFinfulBank = 'assets/images/img_qr_finful_bank.png';
 }
