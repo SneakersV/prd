@@ -24,6 +24,9 @@ class RouteConstant {
   // received request
   static const String receivedRequest = '/receivedRequest';
 
+  // schedule
+  static const String scheduleExpert = '/scheduleExpert';
+
   // dashboard
   static const String dashboard = '/dashboard';
 }

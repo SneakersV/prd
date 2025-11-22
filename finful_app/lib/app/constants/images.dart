@@ -38,4 +38,7 @@ class ImageConstants {
 
   // received request
   static const String imgReceivedRequest = 'assets/images/img_received_request.png';
+
+  // bank
+  static const String imgQRFinfulBank = 'assets/images/img_qr_finful_bank.png';
 }

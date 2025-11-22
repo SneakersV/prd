@@ -14,6 +14,7 @@ import 'package:finful_app/app/presentation/journey/authentication/signup_intro_
 import 'package:finful_app/app/presentation/journey/dashboard/dashboard_screen.dart';
 import 'package:finful_app/app/presentation/journey/dev_mode_screen.dart';
 import 'package:finful_app/app/presentation/journey/received_request/received_request_screen.dart';
+import 'package:finful_app/app/presentation/journey/schedule_expert/schedule_expert_screen.dart';
 import 'package:finful_app/app/presentation/journey/section/assumptions/section_assumptions_qa_screen.dart';
 import 'package:finful_app/app/presentation/journey/section/assumptions/section_assumptions_screen.dart';
 import 'package:finful_app/app/presentation/journey/section/family_support/section_family_support_qa_screen.dart';
@@ -93,6 +94,8 @@ class AppRoutes {
         ).buildPage(settings: settings);
       case RouteConstant.receivedRequest:
         return const ReceivedRequestScreen().buildPage(settings: settings);
+      case RouteConstant.scheduleExpert:
+        return const ScheduleExpertScreen().buildPage(settings: settings);
       case RouteConstant.dashboard:
         return MultiBlocProvider(
             providers: [
