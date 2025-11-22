@@ -1,4 +1,3 @@
-
 import 'package:finful_app/app/constants/key/BlocConstants.dart';
 import 'package:finful_app/app/domain/interactor/section_interactor.dart';
 import 'package:finful_app/app/domain/model/extension/section_ext.dart';

@@ -42,14 +42,16 @@ class GetPlanBloc extends BaseBloc<GetPlanEvent, GetPlanState>
         emit(GetPlanGetCurrentPlanSuccess(
             currentPlan: currentPlan));
       }
+    } catch(err) {
+      emit(GetPlanGetCurrentPlanFailure(state));
+    } finally {
       // broadcast
-      // to fetch latest section progress after call getCurrentPlan
+      // always to fetch latest section progress after call
+      // getCurrentPlan without result of this
       BlocManager().broadcast(
         BlocBroadcastEventConstants.justGetSectionProgressRequired,
         params: {},
       );
-    } catch(err) {
-      emit(GetPlanGetCurrentPlanFailure(state));
     }
   }
 }

@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:finful_app/app/constants/constants.dart';
 import 'package:finful_app/app/presentation/blocs/section/onboarding/onboarding.dart';
 import 'package:finful_app/app/presentation/widgets/app_image/FinfulImage.dart';
 import 'package:finful_app/app/theme/theme.dart';
 import 'package:finful_app/common/constants/dimensions.dart';
+import 'package:finful_app/core/core.dart';
 import 'package:finful_app/core/extension/context_extension.dart';
 import 'package:finful_app/core/extension/extension.dart';
 import 'package:finful_app/core/localization/l10n.dart';
@@ -299,11 +302,9 @@ class _SectionOnboardingCalculateResultState extends State<SectionOnboardingCalc
               year = projectionData.first.year;
             }
 
-            if (caseNumber == null) {
-              return _LoadingView();
-            }
-
             switch (caseNumber) {
+              case null:
+                return _LoadingView();
               case 1:
                 return _PossibleView(
                   year: year,
@@ -318,8 +319,6 @@ class _SectionOnboardingCalculateResultState extends State<SectionOnboardingCalc
                 return _Impossible2View(
                   year: year,
                 );
-              default:
-                return _LoadingView();
             }
           }
 

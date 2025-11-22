@@ -117,6 +117,8 @@ class PlanInteractorImpl implements PlanInteractor {
       caseNumber: planSectionResultResponse.caseNumber,
       message: planSectionResultResponse.message,
       earliestPurchaseYear: planSectionResultResponse.earliestPurchaseYear,
+      customMessage: planSectionResultResponse.customMessage,
+      isAffordable: planSectionResultResponse.isAffordable,
     ) : null;
     final planModel = PlanModel(
       planId: planData.id,

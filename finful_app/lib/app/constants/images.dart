@@ -30,6 +30,12 @@ class ImageConstants {
   static const String imgSpendingResultCase4 = 'assets/images/img_spending_result_case4.png';
   static const String imgSpendingResultCase5 = 'assets/images/img_spending_result_case5.png';
 
+  // assumptions
+  static const String imgAssumptionsResultCase1 = 'assets/images/img_assumptions_result_case1.png';
+  static const String imgAssumptionsResultCase2 = 'assets/images/img_assumptions_result_case2.png';
+  static const String imgAssumptionsResultCase3 = 'assets/images/img_assumptions_result_case3.png';
+  static const String imgAssumptionsResultCase4 = 'assets/images/img_assumptions_result_case4.png';
+  static const String imgAssumptionsResultCase5 = 'assets/images/img_assumptions_result_case5.png';
 
   // dashboard
   static const String imgSchedule = 'assets/images/img_schedule.png';

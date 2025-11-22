@@ -313,4 +313,5 @@ class Dimens {
   static const double p_298 = 298.0;
   static const double p_299 = 299.0;
   static const double p_300 = 300.0;
+  static const double p_327 = 327.0;
 }

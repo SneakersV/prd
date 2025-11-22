@@ -54,7 +54,6 @@ class _ContentView extends StatelessWidget {
   final String image;
   final String description;
 
-
   @override
   Widget build(BuildContext context) {
     return Container(

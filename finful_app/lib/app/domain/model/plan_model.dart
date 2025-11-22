@@ -5,11 +5,15 @@ class PlanSectionResultModel extends Equatable {
   final int? caseNumber;
   final String? message;
   final int? earliestPurchaseYear;
+  final String? customMessage;
+  final bool? isAffordable;
 
   const PlanSectionResultModel({
     this.caseNumber,
     this.message,
     this.earliestPurchaseYear,
+    this.customMessage,
+    this.isAffordable,
   });
 
   @override
@@ -17,6 +21,8 @@ class PlanSectionResultModel extends Equatable {
     caseNumber,
     message,
     earliestPurchaseYear,
+    customMessage,
+    isAffordable,
   ];
 }
 

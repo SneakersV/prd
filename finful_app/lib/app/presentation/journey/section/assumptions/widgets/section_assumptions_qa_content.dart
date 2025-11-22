@@ -14,6 +14,8 @@ import 'package:finful_app/core/extension/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'section_assumptions_calculate_result.dart';
+
 class SectionAssumptionsQAContent extends StatelessWidget {
   const SectionAssumptionsQAContent({
     super.key,
@@ -279,7 +281,7 @@ class SectionAssumptionsQAContent extends StatelessWidget {
             return const SizedBox();
         }
       } else if (stepType == SectionStepType.Final) {
-        return const SizedBox();
+        return const SectionAssumptionsCalculateResult();
       } else {
         return const SizedBox();
       }

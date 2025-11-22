@@ -70,7 +70,7 @@ class SectionOnboardingCalculateResponse extends BaseEntity {
       affordableYear: json['affordableYear'] ?? kInt,
       projectionData: projectionData,
       message: json['message'] ?? kString,
-      caseNumber: json['"caseNumber"'] ?? kInt,
+      caseNumber: json['caseNumber'] ?? kInt,
     );
   }
 
