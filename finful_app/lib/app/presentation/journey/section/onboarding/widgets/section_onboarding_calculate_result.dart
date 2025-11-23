@@ -1,11 +1,8 @@
-import 'dart:math';
-
 import 'package:finful_app/app/constants/constants.dart';
 import 'package:finful_app/app/presentation/blocs/section/onboarding/onboarding.dart';
 import 'package:finful_app/app/presentation/widgets/app_image/FinfulImage.dart';
 import 'package:finful_app/app/theme/theme.dart';
 import 'package:finful_app/common/constants/dimensions.dart';
-import 'package:finful_app/core/core.dart';
 import 'package:finful_app/core/extension/context_extension.dart';
 import 'package:finful_app/core/extension/extension.dart';
 import 'package:finful_app/core/localization/l10n.dart';
@@ -58,7 +55,7 @@ class _PossibleView extends StatelessWidget {
     final staticTxt = L10n.of(context)
         .translate('section_onboarding_calculate_result_title');
     String yearTxt = "";
-    if (year != null) {
+    if (year != null && year! > 0) {
       yearTxt = year.toString();
     } else {
       yearTxt = L10n.of(context)
@@ -118,21 +115,21 @@ class _PossibleView extends StatelessWidget {
 class _Impossible1View extends StatelessWidget {
   const _Impossible1View({
     super.key,
-    required this.year,
-    required this.affordableYear,
+    required this.year1,
+    required this.year2,
     required this.message,
   });
 
-  final int? year;
-  final int? affordableYear;
+  final int? year1;
+  final int? year2;
   final String? message;
 
   String _titleTxt(BuildContext context) {
     final staticTxt = L10n.of(context)
         .translate('section_onboarding_calculate_result_title');
     String yearTxt = "";
-    if (year != null) {
-      yearTxt = year.toString();
+    if (year1 != null && year1! > 0) {
+      yearTxt = year1.toString();
     } else {
       yearTxt = L10n.of(context)
           .translate('common_dummy_default_year');
@@ -149,8 +146,8 @@ class _Impossible1View extends StatelessWidget {
     final staticTxt = L10n.of(context)
         .translate('section_onboarding_calculate_result_possible_future');
     String yearTxt = "";
-    if (affordableYear != null) {
-      yearTxt = affordableYear.toString();
+    if (year2 != null && year2! > 0) {
+      yearTxt = year2.toString();
     } else {
       yearTxt = L10n.of(context)
           .translate('common_dummy_default_year');
@@ -225,7 +222,7 @@ class _Impossible2View extends StatelessWidget {
     final staticTxt = L10n.of(context)
         .translate('section_onboarding_calculate_result_title');
     String yearTxt = "";
-    if (year != null) {
+    if (year != null && year! > 0) {
       yearTxt = year.toString();
     } else {
       yearTxt = L10n.of(context)
@@ -296,28 +293,25 @@ class _SectionOnboardingCalculateResultState extends State<SectionOnboardingCalc
         builder: (_, state) {
           if (state is OnboardingCalculateSuccess) {
             final caseNumber = state.calculateResult?.caseNumber;
-            final projectionData = state.calculateResult?.projectionData ?? [];
-            int? year;
-            if (projectionData.isNotEmpty) {
-              year = projectionData.first.year;
-            }
+            final yearSelected = state.calculateResult?.yearSelected;
+            final affordableYear = state.calculateResult?.affordableYear;
 
             switch (caseNumber) {
               case null:
                 return _LoadingView();
               case 1:
                 return _PossibleView(
-                  year: year,
+                  year: yearSelected,
                 );
               case 2:
                 return _Impossible1View(
-                  year: year,
-                  affordableYear: state.calculateResult?.affordableYear,
+                  year1: yearSelected,
+                  year2: affordableYear,
                   message: state.calculateResult?.message,
                 );
               case 3:
                 return _Impossible2View(
-                  year: year,
+                  year: yearSelected,
                 );
             }
           }

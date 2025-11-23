@@ -229,109 +229,174 @@ class _SectionSpendingQAScreenState extends State<SectionSpendingQAScreen>
       listener: (_, state) {
         _listenerSpendingBloc(state);
       },
-      child: Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        resizeToAvoidBottomInset: true,
-        appBar: FinfulAppBar(
-          backgroundColor: Colors.transparent,
-          forceMaterialTransparency: true,
-          title: L10n.of(context)
-              .translate('section_spending_qa_header_title'),
-          titleStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(
-            fontWeight: FontWeight.w500,
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (bool didPop, _) {
+          _onBackPressed();
+        },
+        child: Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          resizeToAvoidBottomInset: true,
+          appBar: FinfulAppBar(
+            backgroundColor: Colors.transparent,
+            forceMaterialTransparency: true,
+            title: L10n.of(context)
+                .translate('section_spending_qa_header_title'),
+            titleStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
+            leadingIcon: AppSvgIcon(
+              IconConstants.icBack,
+              width: FinfulDimens.iconMd,
+              height: FinfulDimens.iconMd,
+              color: FinfulColor.white,
+            ),
+            onLeadingPressed: _onBackPressed,
           ),
-          leadingIcon: AppSvgIcon(
-            IconConstants.icBack,
-            width: FinfulDimens.iconMd,
-            height: FinfulDimens.iconMd,
-            color: FinfulColor.white,
-          ),
-          onLeadingPressed: _onBackPressed,
-        ),
-        body: GestureDetector(
-          onTap: _handleUnFocus,
-          child: Form(
-            key: _formKey,
-            child: FocusScope(
-              node: _focusScopeNode,
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: CustomScrollView(
-                      slivers: [
-                        SliverPadding(
-                          padding: EdgeInsets.only(
-                            top: Dimens.p_4,
-                          ),
-                          sliver: SliverToBoxAdapter(
-                            child: BlocBuilder<SpendingBloc, SpendingState>(
-                              builder: (_, state) {
-                                if (state.sectionSpendings.isEmpty) {
-                                  return const SizedBox();
-                                }
+          body: GestureDetector(
+            onTap: _handleUnFocus,
+            child: Form(
+              key: _formKey,
+              child: FocusScope(
+                node: _focusScopeNode,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverPadding(
+                            padding: EdgeInsets.only(
+                              top: Dimens.p_4,
+                            ),
+                            sliver: SliverToBoxAdapter(
+                              child: BlocBuilder<SpendingBloc, SpendingState>(
+                                builder: (_, state) {
+                                  if (state.sectionSpendings.isEmpty) {
+                                    return const SizedBox();
+                                  }
 
-                                final currentSection = state.sectionSpendings.last;
-                                final currentStep = currentSection.section.currentStep;
-                                final totalStep = currentSection.section.totalStep;
+                                  final currentSection = state.sectionSpendings.last;
+                                  final currentStep = currentSection.section.currentStep;
+                                  final totalStep = currentSection.section.totalStep;
 
-                                if (currentStep == null ||
-                                    totalStep == null) {
-                                  return const SizedBox();
-                                }
+                                  if (currentStep == null ||
+                                      totalStep == null) {
+                                    return const SizedBox();
+                                  }
 
-                                final stepType = SectionStepTypeExt.fromValue(
-                                    currentSection.section.stepType);
-                                if (stepType == SectionStepType.Final) {
-                                  return const SizedBox();
-                                }
+                                  final stepType = SectionStepTypeExt.fromValue(
+                                      currentSection.section.stepType);
+                                  if (stepType == SectionStepType.Final) {
+                                    return const SizedBox();
+                                  }
 
-                                return SectionProgressBar(
-                                  current: currentStep - 1,
-                                  total: totalStep,
-                                );
-                              },
+                                  return SectionProgressBar(
+                                    current: currentStep - 1,
+                                    total: totalStep,
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        SliverPadding(
-                          padding: EdgeInsets.only(
-                            top: Dimens.p_56,
-                            bottom: Dimens.p_64 + context.queryPaddingBottom,
-                          ),
-                          sliver: SliverToBoxAdapter(
-                            child: SectionSpendingQAContent(
-                              inputController: _inputController,
-                              inputNode: _inputNode,
+                          SliverPadding(
+                            padding: EdgeInsets.only(
+                              top: Dimens.p_56,
+                              bottom: Dimens.p_64 + context.queryPaddingBottom,
+                            ),
+                            sliver: SliverToBoxAdapter(
+                              child: SectionSpendingQAContent(
+                                inputController: _inputController,
+                                inputNode: _inputNode,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: context.queryPaddingBottom,
-                    left: Dimens.p_0,
-                    right: Dimens.p_0,
-                    child: BlocBuilder<SpendingBloc, SpendingState>(
-                      builder: (_, state) {
-                        if (state.sectionSpendings.isEmpty) {
-                          return const SizedBox();
-                        }
-
-                        final currentSection = state.sectionSpendings.last;
-                        final quesType = SectionQuestionTypeExt.fromValue(
-                            currentSection.section.payload?.questionType);
-                        final stepType = SectionStepTypeExt.fromValue(
-                            currentSection.section.stepType);
-                        final currentStep = currentSection.section.currentStep;
-                        final totalStep = currentSection.section.totalStep;
-                        final questionKey = currentSection.section.payload?.key;
-                        final unit = currentSection.section.payload?.unit;
-
-                        if (stepType == SectionStepType.Final) {
-                          if (state is SpendingCalculateInProgress) {
+                    Positioned(
+                      bottom: context.queryPaddingBottom,
+                      left: Dimens.p_0,
+                      right: Dimens.p_0,
+                      child: BlocBuilder<SpendingBloc, SpendingState>(
+                        builder: (_, state) {
+                          if (state.sectionSpendings.isEmpty) {
                             return const SizedBox();
-                          } else if (state is SpendingCalculateSuccess) {
+                          }
+
+                          final currentSection = state.sectionSpendings.last;
+                          final quesType = SectionQuestionTypeExt.fromValue(
+                              currentSection.section.payload?.questionType);
+                          final stepType = SectionStepTypeExt.fromValue(
+                              currentSection.section.stepType);
+                          final currentStep = currentSection.section.currentStep;
+                          final totalStep = currentSection.section.totalStep;
+                          final questionKey = currentSection.section.payload?.key;
+                          final unit = currentSection.section.payload?.unit;
+
+                          if (stepType == SectionStepType.Final) {
+                            if (state is SpendingCalculateInProgress) {
+                              return const SizedBox();
+                            } else if (state is SpendingCalculateSuccess) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: FinfulDimens.md,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    FinfulButton.secondary(
+                                      title: L10n.of(context)
+                                          .translate('common_cta_back_dashboard_btn'),
+                                      onPressed: _processGoBackDashboard,
+                                    ),
+                                    const SizedBox(height: Dimens.p_18),
+                                    FinfulButton.primary(
+                                      title: L10n.of(context)
+                                          .translate('section_spending_result_go_assumptions_btn'),
+                                      onPressed: _processGotoAssumptionsFlow,
+                                    ),
+                                    const SizedBox(height: Dimens.p_18),
+                                  ],
+                                ),
+                              );
+                            }
+
+                            return const SizedBox();
+                          }
+
+                          if (currentStep == totalStep) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: FinfulDimens.md,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  FinfulButton.primary(
+                                    title: L10n.of(context)
+                                        .translate('section_spending_cta_final_btn'),
+                                    onPressed: () {
+                                      if (stepType == SectionStepType.education) {
+                                        _educationContinuePressed(state);
+                                      } else if (stepType == SectionStepType.question) {
+                                        _onAnswerSelected(questionKey, quesType, unit);
+                                      }
+                                    },
+                                  ),
+                                  const SizedBox(height: Dimens.p_12),
+                                ],
+                              ),
+                            );
+                          }
+
+                          if (stepType == SectionStepType.education ||
+                              quesType == SectionQuestionType.number) {
+                            final ctaText = currentSection.section.payload?.ctaText ?? "";
+                            String btnCtaTitle = L10n.of(context)
+                                .translate('common_cta_continue');
+                            if (stepType == SectionStepType.education && ctaText.isNotEmpty) {
+                              btnCtaTitle = ctaText;
+                            }
                             return Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: FinfulDimens.md,
@@ -340,86 +405,27 @@ class _SectionSpendingQAScreenState extends State<SectionSpendingQAScreen>
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   FinfulButton.secondary(
-                                    title: L10n.of(context)
-                                        .translate('common_cta_back_dashboard_btn'),
-                                    onPressed: _processGoBackDashboard,
+                                    title: btnCtaTitle,
+                                    onPressed: () {
+                                      if (stepType == SectionStepType.education) {
+                                        _educationContinuePressed(state);
+                                      } else if (stepType == SectionStepType.question) {
+                                        _onAnswerSelected(questionKey, quesType, unit);
+                                      }
+                                    },
                                   ),
-                                  const SizedBox(height: Dimens.p_18),
-                                  FinfulButton.primary(
-                                    title: L10n.of(context)
-                                        .translate('section_spending_result_go_assumptions_btn'),
-                                    onPressed: _processGotoAssumptionsFlow,
-                                  ),
-                                  const SizedBox(height: Dimens.p_18),
+                                  const SizedBox(height: Dimens.p_12),
                                 ],
                               ),
                             );
                           }
 
                           return const SizedBox();
-                        }
-
-                        if (currentStep == totalStep) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: FinfulDimens.md,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                FinfulButton.primary(
-                                  title: L10n.of(context)
-                                      .translate('section_spending_cta_final_btn'),
-                                  onPressed: () {
-                                    if (stepType == SectionStepType.education) {
-                                      _educationContinuePressed(state);
-                                    } else if (stepType == SectionStepType.question) {
-                                      _onAnswerSelected(questionKey, quesType, unit);
-                                    }
-                                  },
-                                ),
-                                const SizedBox(height: Dimens.p_12),
-                              ],
-                            ),
-                          );
-                        }
-
-                        if (stepType == SectionStepType.education ||
-                            quesType == SectionQuestionType.number) {
-                          final ctaText = currentSection.section.payload?.ctaText ?? "";
-                          String btnCtaTitle = L10n.of(context)
-                              .translate('common_cta_continue');
-                          if (stepType == SectionStepType.education && ctaText.isNotEmpty) {
-                            btnCtaTitle = ctaText;
-                          }
-                          return Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: FinfulDimens.md,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                FinfulButton.secondary(
-                                  title: btnCtaTitle,
-                                  onPressed: () {
-                                    if (stepType == SectionStepType.education) {
-                                      _educationContinuePressed(state);
-                                    } else if (stepType == SectionStepType.question) {
-                                      _onAnswerSelected(questionKey, quesType, unit);
-                                    }
-                                  },
-                                ),
-                                const SizedBox(height: Dimens.p_12),
-                              ],
-                            ),
-                          );
-                        }
-
-                        return const SizedBox();
-                      },
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

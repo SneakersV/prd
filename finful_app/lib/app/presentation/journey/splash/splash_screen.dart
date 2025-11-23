@@ -16,7 +16,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen>
- with BaseScreenMixin<SplashScreen, SplashRouter> {
+    with BaseScreenMixin<SplashScreen, SplashRouter> {
 
   void _processAfterUserLoggedInSuccess() {
     router.gotoDashboard();
@@ -42,16 +42,19 @@ class _SplashScreenState extends State<SplashScreen>
           _processGotoSignIn();
         }
       },
-      child: Scaffold(
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          color: FinfulColor.brandPrimary,
-          child: const Center(
-            child: AppSvgIcon(
-              IconConstants.icEmail,
-              width: Dimens.p_194,
-              height: Dimens.p_198,
+      child: PopScope(
+        canPop: false,
+        child: Scaffold(
+          body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: FinfulColor.brandPrimary,
+            child: const Center(
+              child: AppSvgIcon(
+                IconConstants.icEmail,
+                width: Dimens.p_194,
+                height: Dimens.p_198,
+              ),
             ),
           ),
         ),

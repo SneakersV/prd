@@ -1,4 +1,3 @@
-
 import 'package:finful_app/core/constant/model_constant.dart';
 import 'package:finful_app/core/entity/entity.dart';
 
@@ -45,6 +44,7 @@ class SectionOnboardingCalculateResponse extends BaseEntity {
   final String? message;
   final List<SectionProjectionDataResponse>? projectionData;
   final int? caseNumber;
+  final int? yearSelected;
 
   SectionOnboardingCalculateResponse({
     this.success,
@@ -53,6 +53,7 @@ class SectionOnboardingCalculateResponse extends BaseEntity {
     this.message,
     this.projectionData,
     this.caseNumber,
+    this.yearSelected,
   });
 
   factory SectionOnboardingCalculateResponse.fromJson(Map<String, dynamic> json) {
@@ -64,6 +65,7 @@ class SectionOnboardingCalculateResponse extends BaseEntity {
         : null;
     final projectionData = mapJsonProjectionData?.map(SectionProjectionDataResponse.fromJson)
         .toList();
+
     return SectionOnboardingCalculateResponse(
       success: json['success'] ?? false,
       isAffordable: json['isAffordable'] ?? false,
@@ -71,6 +73,7 @@ class SectionOnboardingCalculateResponse extends BaseEntity {
       projectionData: projectionData,
       message: json['message'] ?? kString,
       caseNumber: json['caseNumber'] ?? kInt,
+      yearSelected: json['yearSelected'] ?? kInt,
     );
   }
 

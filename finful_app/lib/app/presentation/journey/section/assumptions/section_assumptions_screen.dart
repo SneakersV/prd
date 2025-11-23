@@ -133,55 +133,61 @@ class _SectionAssumptionsScreenState extends State<SectionAssumptionsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: FinfulImage(
-            type: FinfulImageType.asset,
-            source: ImageConstants.imgAssumptionsBg,
-            width: double.infinity,
-            height: double.infinity,
-          ),
-        ),
-        Positioned.fill(
-          child: Scaffold(
-            resizeToAvoidBottomInset: true,
-            backgroundColor: Colors.transparent,
-            appBar: showAppBar ? FinfulAppBar(
-              forceMaterialTransparency: true,
-              leadingIcon: AppSvgIcon(
-                IconConstants.icBack,
-                width: FinfulDimens.iconMd,
-                height: FinfulDimens.iconMd,
-                color: FinfulColor.white,
-              ),
-              onLeadingPressed: _onBackPressed,
-            ) : null,
-            body: _ContentView(
-              showAppBar: showAppBar,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, _) {
+        _onBackPressed();
+      },
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: FinfulImage(
+              type: FinfulImageType.asset,
+              source: ImageConstants.imgAssumptionsBg,
+              width: double.infinity,
+              height: double.infinity,
             ),
           ),
-        ),
-        Positioned(
-          bottom: context.queryPaddingBottom,
-          left: FinfulDimens.md,
-          right: FinfulDimens.md,
-          child: Material(
-            color: Colors.transparent,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                FinfulButton.secondary(
-                  title: L10n.of(context)
-                      .translate('section_assumptions_cta_btn'),
-                  onPressed: _onStartFlowPressed,
+          Positioned.fill(
+            child: Scaffold(
+              resizeToAvoidBottomInset: true,
+              backgroundColor: Colors.transparent,
+              appBar: showAppBar ? FinfulAppBar(
+                forceMaterialTransparency: true,
+                leadingIcon: AppSvgIcon(
+                  IconConstants.icBack,
+                  width: FinfulDimens.iconMd,
+                  height: FinfulDimens.iconMd,
+                  color: FinfulColor.white,
                 ),
-                SizedBox(height: Dimens.p_18),
-              ],
+                onLeadingPressed: _onBackPressed,
+              ) : null,
+              body: _ContentView(
+                showAppBar: showAppBar,
+              ),
             ),
           ),
-        ),
-      ],
+          Positioned(
+            bottom: context.queryPaddingBottom,
+            left: FinfulDimens.md,
+            right: FinfulDimens.md,
+            child: Material(
+              color: Colors.transparent,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FinfulButton.secondary(
+                    title: L10n.of(context)
+                        .translate('section_assumptions_cta_btn'),
+                    onPressed: _onStartFlowPressed,
+                  ),
+                  SizedBox(height: Dimens.p_18),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

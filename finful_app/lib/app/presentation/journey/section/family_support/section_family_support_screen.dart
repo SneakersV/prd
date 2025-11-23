@@ -113,7 +113,7 @@ class SectionFamilySupportScreen extends StatefulWidget {
 }
 
 class _SectionFamilySupportScreenState extends State<SectionFamilySupportScreen>
-  with BaseScreenMixin<SectionFamilySupportScreen, SectionFamilySupportRouter> {
+    with BaseScreenMixin<SectionFamilySupportScreen, SectionFamilySupportRouter> {
 
   void _onBackPressed() {
     router.pop();
@@ -126,58 +126,64 @@ class _SectionFamilySupportScreenState extends State<SectionFamilySupportScreen>
   bool get showAppBar {
     return true;
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: FinfulImage(
-            type: FinfulImageType.asset,
-            source: ImageConstants.imgFamilySupportBg,
-            width: double.infinity,
-            height: double.infinity,
-          ),
-        ),
-        Positioned.fill(
-          child: Scaffold(
-            resizeToAvoidBottomInset: true,
-            backgroundColor: Colors.transparent,
-            appBar: showAppBar ? FinfulAppBar(
-              forceMaterialTransparency: true,
-              leadingIcon: AppSvgIcon(
-                IconConstants.icBack,
-                width: FinfulDimens.iconMd,
-                height: FinfulDimens.iconMd,
-                color: FinfulColor.white,
-              ),
-              onLeadingPressed: _onBackPressed,
-            ) : null,
-            body: _ContentView(
-              showAppBar: showAppBar,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, _) {
+        _onBackPressed();
+      },
+      child:  Stack(
+        children: [
+          Positioned.fill(
+            child: FinfulImage(
+              type: FinfulImageType.asset,
+              source: ImageConstants.imgFamilySupportBg,
+              width: double.infinity,
+              height: double.infinity,
             ),
           ),
-        ),
-        Positioned(
-          bottom: context.queryPaddingBottom,
-          left: FinfulDimens.md,
-          right: FinfulDimens.md,
-          child: Material(
-            color: Colors.transparent,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                FinfulButton.secondary(
-                  title: L10n.of(context)
-                      .translate('section_familySupport_cta_btn'),
-                  onPressed: _onStartFlowPressed,
+          Positioned.fill(
+            child: Scaffold(
+              resizeToAvoidBottomInset: true,
+              backgroundColor: Colors.transparent,
+              appBar: showAppBar ? FinfulAppBar(
+                forceMaterialTransparency: true,
+                leadingIcon: AppSvgIcon(
+                  IconConstants.icBack,
+                  width: FinfulDimens.iconMd,
+                  height: FinfulDimens.iconMd,
+                  color: FinfulColor.white,
                 ),
-                SizedBox(height: Dimens.p_18),
-              ],
+                onLeadingPressed: _onBackPressed,
+              ) : null,
+              body: _ContentView(
+                showAppBar: showAppBar,
+              ),
             ),
           ),
-        ),
-      ],
+          Positioned(
+            bottom: context.queryPaddingBottom,
+            left: FinfulDimens.md,
+            right: FinfulDimens.md,
+            child: Material(
+              color: Colors.transparent,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FinfulButton.secondary(
+                    title: L10n.of(context)
+                        .translate('section_familySupport_cta_btn'),
+                    onPressed: _onStartFlowPressed,
+                  ),
+                  SizedBox(height: Dimens.p_18),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -253,20 +253,23 @@ class _DashboardScreenState extends State<DashboardScreen>
       ],
       child: MultiBlocListener(
         listeners: _mapToBlocListeners,
-        child: Scaffold(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          resizeToAvoidBottomInset: true,
-          drawerEdgeDragWidth: 0.0,
-          endDrawerEnableOpenDragGesture: false,
-          drawerEnableOpenDragGesture: false,
-          body: RefreshIndicator(
-            onRefresh: _onRefresh,
-            child: !_isFinalPlan ?
-            DashboardNoneFinalPlanContent(
-              sectionItems: _sectionItems,
-              onSectionItemPressed: _onSectionItemPressed,
-              onStaticSchedulePressed: _onStaticSchedulePressed,
-            ) : Container(),
+        child: PopScope(
+          canPop: false,
+          child: Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            resizeToAvoidBottomInset: true,
+            drawerEdgeDragWidth: 0.0,
+            endDrawerEnableOpenDragGesture: false,
+            drawerEnableOpenDragGesture: false,
+            body: RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: !_isFinalPlan ?
+              DashboardNoneFinalPlanContent(
+                sectionItems: _sectionItems,
+                onSectionItemPressed: _onSectionItemPressed,
+                onStaticSchedulePressed: _onStaticSchedulePressed,
+              ) : Container(),
+            ),
           ),
         ),
       ),
