@@ -47,7 +47,6 @@ class DashboardRouter extends BaseRouter implements IDashboardRouter {
     final router = SectionSpendingRouter(
       entryFrom: SectionSpendingEntryFrom.dashboard,
       planId: planId,
-      familySupportAnswersFilled: [],
     );
     router.start();
   }
@@ -58,6 +57,7 @@ class DashboardRouter extends BaseRouter implements IDashboardRouter {
   }) {
     final router = SectionAssumptionsRouter(
       planId: planId,
+      entryFrom: SectionAssumptionsEntryFrom.spending,
     );
     router.start();
   }
@@ -72,7 +72,9 @@ class DashboardRouter extends BaseRouter implements IDashboardRouter {
 
   @override
   void replaceWithSignIn() {
-    final router = SignInRouter();
+    final router = SignInRouter(
+      entryFrom: SignInEntryFrom.other,
+    );
     router.startAndRemoveUntil(null);
   }
 

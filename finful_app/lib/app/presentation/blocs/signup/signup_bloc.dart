@@ -1,4 +1,3 @@
-
 import 'package:finful_app/app/constants/key/BlocConstants.dart';
 import 'package:finful_app/app/domain/interactor/auth_interactor.dart';
 import 'package:finful_app/app/presentation/blocs/common/show_message/show_message_event.dart';
@@ -45,12 +44,10 @@ class SignUpBloc extends BaseBloc<SignUpEvent, SignUpState>
           lastName: event.lastName
       );
       if (result.userId.isNotNullAndEmpty) {
-        showSnackBarMessage(
-          type: ShowMessageSnackBarType.info,
-          title: 'sign_up_succeed',
-          message: 'sign_up_succeed_message',
-        );
-        emit(SignUpSuccess(email: event.email));
+        emit(SignUpSuccess(
+          email: event.email,
+          password: event.password,
+        ));
       } else {
         showSnackBarMessage(
           type: ShowMessageSnackBarType.error,

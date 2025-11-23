@@ -1,11 +1,10 @@
+import 'package:finful_app/app/constants/route.dart';
 import 'package:finful_app/app/presentation/journey/authentication/sign_in_router.dart';
 import 'package:finful_app/app/presentation/journey/dashboard/dashboard_router.dart';
 import 'package:finful_app/app/presentation/journey/section/onboarding/section_onboarding_router.dart';
 import 'package:finful_app/app/presentation/journey/section/onboarding/section_onboarding_screen.dart';
 import 'package:finful_app/app/routes/app_routes.dart';
-
-import '../../../../core/presentation/base_router.dart';
-import '../../../constants/route.dart';
+import 'package:finful_app/core/presentation/base_router.dart';
 
 abstract interface class ISplashRouter {
   void gotoOnboarding();
@@ -34,7 +33,9 @@ class SplashRouter extends BaseRouter implements ISplashRouter {
 
   @override
   void gotoSignIn() {
-    final router = SignInRouter();
+    final router = SignInRouter(
+      entryFrom: SignInEntryFrom.other,
+    );
     router.startAndRemoveUntil(null);
   }
 

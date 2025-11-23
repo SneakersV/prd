@@ -34,3 +34,19 @@ class CreatePlanSuccess extends CreatePlanState {
 class CreatePlanFailure extends CreatePlanState {
   const CreatePlanFailure(): super();
 }
+
+class CreatePlanFromDraftDataInProgress extends CreatePlanState {
+  const CreatePlanFromDraftDataInProgress(): super();
+}
+
+class CreatePlanFromDraftDataSuccess extends CreatePlanState {
+  const CreatePlanFromDraftDataSuccess({
+    required PlanModel createdPlan,
+  }): super(
+    createdPlan: createdPlan,
+  );
+}
+
+class CreatePlanFromDraftDataFailure extends CreatePlanState {
+  const CreatePlanFromDraftDataFailure(): super();
+}

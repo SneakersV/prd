@@ -3,10 +3,13 @@ import 'package:finful_app/app/data/enum/section.dart';
 import 'package:finful_app/app/domain/model/extension/section_progress_ext.dart';
 import 'package:finful_app/app/presentation/blocs/common/session/session_bloc.dart';
 import 'package:finful_app/app/presentation/blocs/common/session/session_state.dart';
+import 'package:finful_app/app/presentation/blocs/common/show_message/show_message_event.dart';
 import 'package:finful_app/app/presentation/blocs/get_plan/get_plan.dart';
 import 'package:finful_app/app/presentation/blocs/get_section_progress/get_section_progress.dart';
 import 'package:finful_app/app/presentation/blocs/mixins/get_plan_bloc_mixin.dart';
+import 'package:finful_app/app/presentation/blocs/mixins/get_section_progress_bloc_mixin.dart';
 import 'package:finful_app/app/presentation/blocs/mixins/session_bloc_mixin.dart';
+import 'package:finful_app/app/presentation/blocs/mixins/show_message_mixin.dart';
 import 'package:finful_app/app/presentation/journey/dashboard/dashboard_router.dart';
 import 'package:finful_app/app/presentation/journey/dashboard/widgets/dashboard_none_final_plan_content.dart';
 import 'package:finful_app/app/utils/utils.dart';
@@ -16,6 +19,7 @@ import 'package:finful_app/core/presentation/base_screen_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'ui_model/section_dashboard_item.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class _TabBarItem {
   final String icon;
@@ -38,7 +42,8 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen>
     with BaseScreenMixin<DashboardScreen, DashboardRouter>,
-        SessionBlocMixin, GetPlanBlocMixin {
+        SessionBlocMixin, GetPlanBlocMixin, GetSectionProgressMixin,
+        ShowMessageBlocMixin {
   int _currentTabIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
 
@@ -71,11 +76,20 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   @override
+  void initState() {
+    super.initState();
+    _sectionItems = _defaultInitSectionItems;
+  }
+
+  @override
   void didMountWidget() {
+    _startGetCurrentPlan();
     super.didMountWidget();
-    setState(() {
-      _sectionItems = _defaultInitSectionItems;
-    });
+  }
+
+  @override
+  void didResume() {
+    super.didResume();
     _startGetCurrentPlan();
   }
 
@@ -92,8 +106,11 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   void _onSectionItemPressed(SectionDashboardItem item) {
     final planState = getPlanState;
+    final sectionProgressState = getSectionProgressState;
     final currentPlan = planState.currentPlan;
-    final currentPlanId = currentPlan?.planId;
+    // neu ko co planId o getPlanState thi lay planId o getSectionProgressState
+    final currentPlanId = currentPlan?.planId ??
+        sectionProgressState.currentProgress?.planId;
     switch (item.sectionType) {
       case SectionType.onboarding:
         if (currentPlanId.isNullOrEmpty) {
@@ -124,8 +141,19 @@ class _DashboardScreenState extends State<DashboardScreen>
     }
   }
 
-  void _onStaticSchedulePressed() {
+  Future<void> _onStaticSchedulePressed() async {
+    final meetingLink = "https://cal.com/tuan-nguyen-finful/45min";
+    final url = Uri.tryParse(meetingLink);
+    if (url == null) return;
 
+    if (!await launchUrl(url)) {
+      showSnackBarMessage(
+        type: ShowMessageSnackBarType.error,
+        title: 'common_link_error_title',
+        message: 'common_link_error_message',
+      );
+      return;
+    }
   }
 
   void _handleGetCurrentSectionProgressSuccess(GetSectionProgressGetCurrentSuccess state) {

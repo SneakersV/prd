@@ -314,9 +314,7 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
                   if (stepType == SectionStepType.Final) {
                     if (state is AssumptionsCalculateInProgress) {
                       return const SizedBox();
-                    }
-
-                    if (state is AssumptionsCalculateSuccess) {
+                    } else if (state is AssumptionsCalculateSuccess) {
                       return Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: FinfulDimens.md,
@@ -324,12 +322,10 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            FinfulButton.secondary(
+                            FinfulButton.primary(
                               title: L10n.of(context)
                                   .translate('common_cta_back_dashboard_btn'),
-                              onPressed: () {
-                                _onAfterCalculatePressed();
-                              },
+                              onPressed: _onAfterCalculatePressed,
                             ),
                             const SizedBox(height: Dimens.p_18),
                           ],

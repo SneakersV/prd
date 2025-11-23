@@ -61,7 +61,7 @@ class AuthInteractorImpl implements AuthInteractor {
         lastName: lastName,
         emailAddress: email,
         password: password,
-        passwordVerification: password
+        passwordVerification: password,
     );
     final response = await _authRepository.submitSignUp(request);
     return response;

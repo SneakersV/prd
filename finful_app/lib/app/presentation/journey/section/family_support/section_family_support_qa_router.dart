@@ -1,14 +1,11 @@
 import 'package:finful_app/app/constants/route.dart';
-import 'package:finful_app/app/domain/model/section_model.dart';
 import 'package:finful_app/app/presentation/journey/dashboard/dashboard_router.dart';
 import 'package:finful_app/app/presentation/journey/section/spending/section_spending_router.dart';
 import 'package:finful_app/app/routes/app_routes.dart';
 import 'package:finful_app/core/presentation/base_router.dart';
 
 abstract interface class ISectionFamilySupportQARouter {
-  void gotoSectionSpending({
-    required List<SectionAnswerModel> familySupportAnswersFilled,
-  });
+  void gotoSectionSpending();
 
   void goBackDashboard();
 }
@@ -21,13 +18,10 @@ class SectionFamilySupportQARouter extends BaseRouter implements ISectionFamilyS
   final String planId;
 
   @override
-  void gotoSectionSpending({
-    required List<SectionAnswerModel> familySupportAnswersFilled,
-  }) {
+  void gotoSectionSpending() {
     final router = SectionSpendingRouter(
       entryFrom: SectionSpendingEntryFrom.familySupport,
       planId: planId,
-      familySupportAnswersFilled: familySupportAnswersFilled,
     );
     router.start();
   }

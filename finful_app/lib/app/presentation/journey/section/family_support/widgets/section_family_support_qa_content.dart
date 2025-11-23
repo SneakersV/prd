@@ -244,7 +244,15 @@ class SectionFamilySupportQAContent extends StatelessWidget {
       } else if (stepType == SectionStepType.education) {
         return _renderEducationContent(context, data);
       } else if (stepType == SectionStepType.Final) {
-        return SectionFamilySupportQaSubmitResult();
+        String resultMessage = L10n.of(context)
+            .translate('section_familySupport_result_submitting');
+        if (state is FamilySupportSubmitAnswerSuccess) {
+          resultMessage = L10n.of(context)
+              .translate('section_familySupport_result_submit_success');
+        }
+        return SectionFamilySupportQaSubmitResult(
+          message: resultMessage,
+        );
       } else {
         return const SizedBox();
       }

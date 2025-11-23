@@ -12,7 +12,7 @@ class SignUpResponse {
 
   factory SignUpResponse.fromJson(Map<String, dynamic> json) {
     return SignUpResponse(
-      success: json['success'],
+      success: json['success'] ?? false,
       userId: json['userId'] ?? kString,
     );
   }

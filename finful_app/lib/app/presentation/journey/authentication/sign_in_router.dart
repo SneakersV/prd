@@ -1,9 +1,11 @@
-
 import 'package:finful_app/app/constants/route.dart';
+import 'package:finful_app/app/presentation/journey/authentication/sign_up_router.dart';
 import 'package:finful_app/app/presentation/journey/dashboard/dashboard_router.dart';
 import 'package:finful_app/app/routes/app_routes.dart';
 import 'package:finful_app/core/presentation/base_router.dart';
 import 'package:flutter/material.dart';
+
+enum SignInEntryFrom { signUp, other }
 
 abstract interface class ISignInRouter {
   void gotoSignUp();
@@ -14,7 +16,15 @@ abstract interface class ISignInRouter {
 }
 
 class SignInRouter extends BaseRouter implements ISignInRouter {
-  SignInRouter() : super(navigatorKey: AppRoutes.shared.navigatorKey);
+  SignInRouter({
+    this.email,
+    this.password,
+    required this.entryFrom,
+  }) : super(navigatorKey: AppRoutes.shared.navigatorKey);
+
+  final SignInEntryFrom entryFrom;
+  final String? email;
+  final String? password;
 
   @override
   void gotoDashboard() {
@@ -29,7 +39,8 @@ class SignInRouter extends BaseRouter implements ISignInRouter {
 
   @override
   void gotoSignUp() {
-    // TODO: implement gotoSignUp
+    final router = SignUpRouter();
+    router.start();
   }
 
   @override

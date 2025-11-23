@@ -24,10 +24,8 @@ class SpendingGetPreviousStepStarted extends SpendingEvent {}
 
 class SpendingCalculateStarted extends SpendingEvent {
   final String? planId;
-  final List<SectionAnswerModel> familySupportAnswersFilled;
 
   SpendingCalculateStarted({
     required this.planId,
-    required this.familySupportAnswersFilled,
   });
 }

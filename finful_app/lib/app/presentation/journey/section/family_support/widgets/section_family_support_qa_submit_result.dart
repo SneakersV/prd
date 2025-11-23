@@ -1,11 +1,15 @@
 import 'package:finful_app/app/theme/colors.dart';
 import 'package:finful_app/common/constants/dimensions.dart';
 import 'package:finful_app/core/extension/context_extension.dart';
-import 'package:finful_app/core/localization/l10n.dart';
 import 'package:flutter/material.dart';
 
 class SectionFamilySupportQaSubmitResult extends StatelessWidget {
-  const SectionFamilySupportQaSubmitResult({super.key});
+  const SectionFamilySupportQaSubmitResult({
+    super.key,
+    required this.message,
+  });
+
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +30,7 @@ class SectionFamilySupportQaSubmitResult extends StatelessWidget {
         ),
         const SizedBox(height: Dimens.p_60),
         Text(
-          L10n.of(context)
-              .translate('section_familySupport_result_submitting'),
+          message,
           style: Theme.of(context).textTheme.displaySmall!.copyWith(
             fontWeight: FontWeight.w400,
           ),

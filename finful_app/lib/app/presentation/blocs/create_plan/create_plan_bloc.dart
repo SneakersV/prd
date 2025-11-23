@@ -22,6 +22,7 @@ class CreatePlanBloc extends BaseBloc<CreatePlanEvent, CreatePlanState>
         initialState: CreatePlanInitial(),
       ) {
     on<CreatePlanStarted>(_onCreatePlanStarted);
+    on<CreatePlanFromDraftDataStarted>(_onCreatePlanFromDraftDataStarted);
   }
 
   factory CreatePlanBloc.instance() {
@@ -42,6 +43,23 @@ class CreatePlanBloc extends BaseBloc<CreatePlanEvent, CreatePlanState>
       }
     } catch (err) {
       emit(CreatePlanFailure());
+    }
+  }
+
+  Future<void> _onCreatePlanFromDraftDataStarted(
+      CreatePlanFromDraftDataStarted event,
+      Emitter<CreatePlanState> emit,
+      ) async {
+    emit(CreatePlanFromDraftDataInProgress());
+
+    try {
+      final newPlan = await _planInteractor.submitCreatePlan(
+          answersFilled: event.answersFilled);
+      if (newPlan != null) {
+        emit(CreatePlanFromDraftDataSuccess(createdPlan: newPlan));
+      }
+    } catch (err) {
+      emit(CreatePlanFromDraftDataFailure());
     }
   }
 }

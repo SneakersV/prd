@@ -116,7 +116,11 @@ class _SectionAssumptionsScreenState extends State<SectionAssumptionsScreen>
     with BaseScreenMixin<SectionAssumptionsScreen, SectionAssumptionsRouter> {
 
   void _onBackPressed() {
-    router.pop();
+    if (router.entryFrom == SectionAssumptionsEntryFrom.spending) {
+      router.goBackDashboard();
+    } else if (router.entryFrom == SectionAssumptionsEntryFrom.dashboard) {
+      router.pop();
+    }
   }
 
   void _onStartFlowPressed() {

@@ -11,3 +11,11 @@ class CreatePlanStarted extends CreatePlanEvent {
     required this.answersFilled,
   });
 }
+
+class CreatePlanFromDraftDataStarted extends CreatePlanEvent {
+  final List<SectionAnswerModel> answersFilled;
+
+  CreatePlanFromDraftDataStarted({
+    required this.answersFilled,
+  });
+}

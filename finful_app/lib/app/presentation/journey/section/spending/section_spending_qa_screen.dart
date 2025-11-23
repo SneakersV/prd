@@ -164,25 +164,20 @@ class _SectionSpendingQAScreenState extends State<SectionSpendingQAScreen>
       title: 'common_section_completed_title',
       message: 'common_section_completed_message',
     );
-    if (router.familySupportAnswersFilled.isEmpty) {
-      showSnackBarMessage(
-        type: ShowMessageSnackBarType.error,
-        title: 'section_spending_missing_familySupport_answers_title',
-        message: 'section_spending_missing_familySupport_answers_message',
-      );
-      return;
-    }
 
     BlocManager().event<SpendingBloc>(
       BlocConstants.sectionSpending,
       SpendingCalculateStarted(
         planId: router.planId,
-        familySupportAnswersFilled: router.familySupportAnswersFilled,
       ),
     );
   }
 
-  void _onAfterCalculatePressed() {
+  void _processGotoAssumptionsFlow() {
+    router.gotoSectionAssumptions();
+  }
+
+  void _processGoBackDashboard() {
     router.goBackDashboard();
   }
 
@@ -336,9 +331,7 @@ class _SectionSpendingQAScreenState extends State<SectionSpendingQAScreen>
                         if (stepType == SectionStepType.Final) {
                           if (state is SpendingCalculateInProgress) {
                             return const SizedBox();
-                          }
-
-                          if (state is SpendingCalculateSuccess) {
+                          } else if (state is SpendingCalculateSuccess) {
                             return Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: FinfulDimens.md,
@@ -349,9 +342,13 @@ class _SectionSpendingQAScreenState extends State<SectionSpendingQAScreen>
                                   FinfulButton.secondary(
                                     title: L10n.of(context)
                                         .translate('common_cta_back_dashboard_btn'),
-                                    onPressed: () {
-                                      _onAfterCalculatePressed();
-                                    },
+                                    onPressed: _processGoBackDashboard,
+                                  ),
+                                  const SizedBox(height: Dimens.p_18),
+                                  FinfulButton.primary(
+                                    title: L10n.of(context)
+                                        .translate('section_spending_result_go_assumptions_btn'),
+                                    onPressed: _processGotoAssumptionsFlow,
                                   ),
                                   const SizedBox(height: Dimens.p_18),
                                 ],

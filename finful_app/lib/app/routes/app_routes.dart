@@ -1,15 +1,14 @@
 import 'package:finful_app/app/constants/key/BlocConstants.dart';
 import 'package:finful_app/app/constants/route.dart';
-import 'package:finful_app/app/presentation/blocs/common/session/session.dart';
 import 'package:finful_app/app/presentation/blocs/create_plan/create_plan.dart';
-import 'package:finful_app/app/presentation/blocs/get_plan/get_plan.dart';
-import 'package:finful_app/app/presentation/blocs/get_section_progress/get_section_progress_bloc.dart';
 import 'package:finful_app/app/presentation/blocs/section/assumptions/assumptions_bloc.dart';
 import 'package:finful_app/app/presentation/blocs/section/family_support/family_support_bloc.dart';
 import 'package:finful_app/app/presentation/blocs/section/onboarding/onboarding.dart';
 import 'package:finful_app/app/presentation/blocs/section/spending/spending.dart';
 import 'package:finful_app/app/presentation/blocs/signin/signin.dart';
+import 'package:finful_app/app/presentation/blocs/signup/signup.dart';
 import 'package:finful_app/app/presentation/journey/authentication/sign_in_screen.dart';
+import 'package:finful_app/app/presentation/journey/authentication/sign_up_screen.dart';
 import 'package:finful_app/app/presentation/journey/authentication/signup_intro_screen.dart';
 import 'package:finful_app/app/presentation/journey/dashboard/dashboard_screen.dart';
 import 'package:finful_app/app/presentation/journey/dev_mode_screen.dart';
@@ -52,21 +51,37 @@ class AppRoutes {
         );
       case RouteConstant.signUpIntro:
         return const SignUpIntroScreen().buildPage(settings: settings);
+      case RouteConstant.signUp:
+        return BlocProvider<SignUpBloc>(
+          create: (_) => SignUpBloc.instance(),
+          child: const SignUpScreen(),
+        ).buildPage(settings: settings);
       case RouteConstant.signIn:
-        return BlocProvider<SignInBloc>(
-          create: (_) => SignInBloc.instance(),
-          child: const SignInScreen(),
+        final createPlanBloc = BlocManager().blocFromKey<CreatePlanBloc>(
+            BlocConstants.createPlan);
+        return MultiBlocProvider(
+            providers: [
+              BlocProvider<SignInBloc>(
+                create: (_) => SignInBloc.instance(),
+              ),
+              BlocProvider<CreatePlanBloc>.value(
+                value: createPlanBloc!,
+              ),
+            ],
+            child: const SignInScreen()
         ).buildPage(settings: settings);
       case RouteConstant.sectionOnboarding:
         return const SectionOnboardingScreen().buildPage(settings: settings);
       case RouteConstant.sectionOnboardingQA:
+        final createPlanBloc = BlocManager().blocFromKey<CreatePlanBloc>(
+            BlocConstants.createPlan);
         return MultiBlocProvider(
             providers: [
               BlocProvider<OnboardingBloc>(
                 create: (_) => OnboardingBloc.instance(),
               ),
-              BlocProvider<CreatePlanBloc>(
-                create: (_) => CreatePlanBloc.instance(),
+              BlocProvider<CreatePlanBloc>.value(
+                value: createPlanBloc!,
               ),
             ],
             child: const SectionOnboardingQAScreen()

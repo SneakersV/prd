@@ -141,6 +141,8 @@ extension StringExtension on String {
 
   bool get isNumber => int.tryParse(this) != null;
 
+  bool get isPasswordValid => length >= 8;
+
   bool get isEmailValid =>
       RegExp(RegexConstants.validEmailRegex, caseSensitive: false)
           .hasMatch(this);

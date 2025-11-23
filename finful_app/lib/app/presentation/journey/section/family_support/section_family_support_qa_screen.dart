@@ -1,7 +1,6 @@
 import 'package:finful_app/app/constants/icons.dart';
 import 'package:finful_app/app/constants/key/BlocConstants.dart';
 import 'package:finful_app/app/data/enum/section.dart';
-import 'package:finful_app/app/domain/model/extension/extension.dart';
 import 'package:finful_app/app/domain/model/section_model.dart';
 import 'package:finful_app/app/presentation/blocs/common/show_message/show_message_event.dart';
 import 'package:finful_app/app/presentation/blocs/mixins/family_support_bloc_mixin.dart';
@@ -159,12 +158,12 @@ with BaseScreenMixin<SectionFamilySupportQAScreen, SectionFamilySupportQARouter>
     );
   }
 
-  void _processGotoSpendingFlow(FamilySupportSubmitAnswerSuccess state) {
-    final familySupportAnswersFilled = state
-        .sectionFamilySupports.toValidAnswersFilled;
-    router.gotoSectionSpending(
-      familySupportAnswersFilled: familySupportAnswersFilled,
-    );
+  void _processGotoSpendingFlow() {
+    router.gotoSectionSpending();
+  }
+
+  void _processGoBackDashboard() {
+    router.goBackDashboard();
   }
 
   void _processSubmitAnswers() {
@@ -220,8 +219,6 @@ with BaseScreenMixin<SectionFamilySupportQAScreen, SectionFamilySupportQARouter>
       _processGetNextStepSuccess(state);
     } else if (state is FamilySupportGetPreviousStepSuccess) {
       _processGetPreviousStepSuccess(state);
-    } else if (state is FamilySupportSubmitAnswerSuccess) {
-      _processGotoSpendingFlow(state);
     }
   }
 
@@ -332,6 +329,29 @@ with BaseScreenMixin<SectionFamilySupportQAScreen, SectionFamilySupportQARouter>
 
                         if (state is FamilySupportSubmitAnswerInProgress) {
                           return const SizedBox();
+                        } else if (state is FamilySupportSubmitAnswerSuccess) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: FinfulDimens.md,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                FinfulButton.secondary(
+                                  title: L10n.of(context)
+                                      .translate('common_cta_back_dashboard_btn'),
+                                  onPressed: _processGoBackDashboard,
+                                ),
+                                const SizedBox(height: Dimens.p_12),
+                                FinfulButton.primary(
+                                  title: L10n.of(context)
+                                      .translate('section_familySupport_result_go_spending_btn'),
+                                  onPressed: _processGotoSpendingFlow,
+                                ),
+                                const SizedBox(height: Dimens.p_12),
+                              ],
+                            ),
+                          );
                         }
 
                         if (currentStep == totalStep) {
@@ -344,7 +364,7 @@ with BaseScreenMixin<SectionFamilySupportQAScreen, SectionFamilySupportQARouter>
                               children: [
                                 FinfulButton.primary(
                                   title: L10n.of(context)
-                                      .translate('section_familySupport_cta_final_btn'),
+                                      .translate('common_cta_submit'),
                                   onPressed: () {
                                     if (stepType == SectionStepType.education) {
                                       _educationContinuePressed(state);

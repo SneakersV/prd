@@ -17,18 +17,15 @@ class SectionSpendingRouter extends BaseRouter implements ISectionSpendingRouter
   SectionSpendingRouter({
     required this.entryFrom,
     required this.planId,
-    required this.familySupportAnswersFilled,
   }) : super(navigatorKey: AppRoutes.shared.navigatorKey);
 
   final SectionSpendingEntryFrom entryFrom;
   final String planId;
-  final List<SectionAnswerModel> familySupportAnswersFilled;
 
   @override
   void gotoQA() {
     final router = SectionSpendingQARouter(
       planId: planId,
-      familySupportAnswersFilled: familySupportAnswersFilled,
     );
     router.start();
   }

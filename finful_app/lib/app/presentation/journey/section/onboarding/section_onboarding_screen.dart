@@ -1,5 +1,6 @@
-
 import 'package:finful_app/app/constants/constants.dart';
+import 'package:finful_app/app/presentation/blocs/create_plan/create_plan_bloc.dart';
+import 'package:finful_app/app/presentation/blocs/create_plan/create_plan_state.dart';
 import 'package:finful_app/app/presentation/journey/section/onboarding/section_onboarding_router.dart';
 import 'package:finful_app/app/presentation/widgets/app_button/FinfulButton.dart';
 import 'package:finful_app/app/presentation/widgets/app_image/FinfulImage.dart';
@@ -11,6 +12,7 @@ import 'package:finful_app/core/extension/context_extension.dart';
 import 'package:finful_app/core/localization/l10n.dart';
 import 'package:finful_app/core/presentation/base_screen_mixin.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class _ContentCard extends StatelessWidget {
   const _ContentCard({
@@ -207,68 +209,82 @@ class _SectionOnboardingScreenState extends State<SectionOnboardingScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: FinfulImage(
-            type: FinfulImageType.asset,
-            source: ImageConstants.imgOnboardingBg,
-            width: double.infinity,
-            height: double.infinity,
-          ),
-        ),
-        Positioned.fill(
-          child: Scaffold(
-            resizeToAvoidBottomInset: true,
-            backgroundColor: Colors.transparent,
-            appBar: showAppBar ? FinfulAppBar(
-              forceMaterialTransparency: true,
-              leadingIcon: AppSvgIcon(
-                IconConstants.icBack,
-                width: FinfulDimens.iconMd,
-                height: FinfulDimens.iconMd,
-                color: FinfulColor.white,
-              ),
-              onLeadingPressed: _onBackPressed,
-            ) : null,
-            body: _ContentView(
-              showAppBar: showAppBar,
-            ),
-          ),
-        ),
-        Positioned(
-          bottom: context.queryPaddingBottom,
-          left: FinfulDimens.md,
-          right: FinfulDimens.md,
-          child: Material(
-            color: Colors.transparent,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                FinfulButton.secondary(
-                  title: L10n.of(context)
-                      .translate('section_onboarding_start_btn'),
-                  onPressed: _onStartFlowPressed,
-                ),
-                if (showSignUpFlowBtn)
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: FinfulDimens.xs,
-                    bottom: FinfulDimens.xs,
-                  ),
-                  child: FinfulButton.border(
-                    title: L10n.of(context)
-                        .translate('common_cta_signin'),
-                    borderColor: FinfulColor.white,
-                    isBare: true,
-                    onPressed: _onLoginPressed,
-                  ),
-                ),
-              ],
-            ),
-          ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CreatePlanBloc>(
+          create: (_) => CreatePlanBloc.instance(),
         ),
       ],
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<CreatePlanBloc, CreatePlanState>(
+            listener: (_, state) {},
+          ),
+        ],
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: FinfulImage(
+                type: FinfulImageType.asset,
+                source: ImageConstants.imgOnboardingBg,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+            ),
+            Positioned.fill(
+              child: Scaffold(
+                resizeToAvoidBottomInset: true,
+                backgroundColor: Colors.transparent,
+                appBar: showAppBar ? FinfulAppBar(
+                  forceMaterialTransparency: true,
+                  leadingIcon: AppSvgIcon(
+                    IconConstants.icBack,
+                    width: FinfulDimens.iconMd,
+                    height: FinfulDimens.iconMd,
+                    color: FinfulColor.white,
+                  ),
+                  onLeadingPressed: _onBackPressed,
+                ) : null,
+                body: _ContentView(
+                  showAppBar: showAppBar,
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: context.queryPaddingBottom,
+              left: FinfulDimens.md,
+              right: FinfulDimens.md,
+              child: Material(
+                color: Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FinfulButton.secondary(
+                      title: L10n.of(context)
+                          .translate('section_onboarding_start_btn'),
+                      onPressed: _onStartFlowPressed,
+                    ),
+                    if (showSignUpFlowBtn)
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: FinfulDimens.xs,
+                          bottom: FinfulDimens.xs,
+                        ),
+                        child: FinfulButton.border(
+                          title: L10n.of(context)
+                              .translate('common_cta_signin'),
+                          borderColor: FinfulColor.white,
+                          isBare: true,
+                          onPressed: _onLoginPressed,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -1,7 +1,10 @@
-
 import 'package:finful_app/app/constants/constants.dart';
 import 'package:finful_app/app/constants/key/BlocConstants.dart';
+import 'package:finful_app/app/presentation/blocs/create_plan/create_plan.dart';
+import 'package:finful_app/app/presentation/blocs/mixins/loader_bloc_mixin.dart';
+import 'package:finful_app/app/presentation/blocs/mixins/stored_draft_bloc_mixin.dart';
 import 'package:finful_app/app/presentation/blocs/signin/signin.dart';
+import 'package:finful_app/app/presentation/blocs/stored_draft/stored_draft.dart';
 import 'package:finful_app/app/presentation/journey/authentication/sign_in_router.dart';
 import 'package:finful_app/app/presentation/widgets/app_button/FinfulButton.dart';
 import 'package:finful_app/app/presentation/widgets/app_input/FinfulTextInput.dart';
@@ -26,7 +29,8 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen>
-    with BaseScreenMixin<SignInScreen, SignInRouter> {
+    with BaseScreenMixin<SignInScreen, SignInRouter>,
+        StoredDraftBlocMixin, LoaderBlocMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FocusScopeNode _focusScopeNode = FocusScopeNode();
   late TextEditingController _emailController;
@@ -40,6 +44,12 @@ class _SignInScreenState extends State<SignInScreen>
     super.initState();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+  }
+
+  @override
+  void didMountWidget() {
+    super.didMountWidget();
+    _processAutoSubmitLogin();
   }
 
   @override
@@ -76,17 +86,32 @@ class _SignInScreenState extends State<SignInScreen>
     });
   }
 
+  void _processAutoSubmitLogin() {
+    if (isAutoLogin) {
+      showAppLoading();
+      _emailController.text = router.email!;
+      _passwordController.text = router.password!;
+      _onSubmitPressed();
+    }
+  }
+
   void _onSubmitPressed() {
     final inputsValid = _formKey.currentState!.validate();
     if (inputsValid) {
       BlocManager().event<SignInBloc>(
         BlocConstants.signIn,
         SignInSubmitted(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim()
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim()
         ),
       );
     }
+  }
+
+  // co nghia la di tu luong sau khi sign up success -> signin (screen nay)
+  bool get isAutoLogin {
+    return router.email.isNotNullAndEmpty &&
+        router.password.isNotNullAndEmpty;
   }
 
   Future<void> _onBackPressed() async {
@@ -95,20 +120,72 @@ class _SignInScreenState extends State<SignInScreen>
     router.pop();
   }
 
+  void _gotoDashboard() {
+    router.gotoDashboard();
+  }
+
+  void _gotoSignUpPressed() {
+    if (router.entryFrom == SignInEntryFrom.signUp) {
+      router.pop();
+    } else if (router.entryFrom == SignInEntryFrom.other) {
+      router.gotoSignUp();
+    }
+  }
+
   Future<void> _processAfterSignInSuccess() async {
     _handleUnFocus();
     await Future.delayed(Duration(milliseconds: 300));
-    router.gotoDashboard();
+    final onboardingDraftData = getStoredDraftState.onboardingAnswersDraft;
+    final isHasData = onboardingDraftData != null && onboardingDraftData.isNotEmpty;
+    final shouldCreatePlan = isAutoLogin && isHasData;
+    if (shouldCreatePlan) {
+      BlocManager().event<CreatePlanBloc>(
+        BlocConstants.createPlan,
+        CreatePlanFromDraftDataStarted(
+          answersFilled: onboardingDraftData,
+        ),
+      );
+    } else {
+      _gotoDashboard();
+    }
+  }
+
+  void _processAfterStartedCreatePlanFromDraftData() {
+    BlocManager().event<StoredDraftBloc>(
+      BlocConstants.storedDraft,
+      StoredDraftClearOnboardingDataStarted(),
+    );
+    _gotoDashboard();
+  }
+
+  void _signInBlocListener(BuildContext context, SignInState state) {
+    if (state is SignInSuccess) {
+      _processAfterSignInSuccess();
+    }
+  }
+
+  void _createPlanBlocListener(BuildContext context, CreatePlanState state) {
+    if (state is CreatePlanFromDraftDataSuccess ||
+      state is CreatePlanFromDraftDataFailure) {
+      _processAfterStartedCreatePlanFromDraftData();
+    }
+  }
+
+  List<BlocListener> get _mapToBlocListeners {
+    return [
+      BlocListener<SignInBloc, SignInState>(
+        listener: _signInBlocListener,
+      ),
+      BlocListener<CreatePlanBloc, CreatePlanState>(
+        listener: _createPlanBlocListener,
+      ),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SignInBloc, SignInState>(
-      listener: (_, state) {
-        if (state is SignInSuccess) {
-          _processAfterSignInSuccess();
-        }
-      },
+    return MultiBlocListener(
+      listeners: _mapToBlocListeners,
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         resizeToAvoidBottomInset: true,
@@ -137,7 +214,7 @@ class _SignInScreenState extends State<SignInScreen>
                   slivers: [
                     SliverPadding(
                       padding: EdgeInsets.only(
-                          top: Dimens.p_44
+                        top: Dimens.p_44,
                       ),
                       sliver: SliverToBoxAdapter(
                         child: SizedBox(
@@ -207,9 +284,9 @@ class _SignInScreenState extends State<SignInScreen>
                                 height: Dimens.p_20,
                               ),
                               suffixIcon: Padding(
-                                  padding: EdgeInsets.only(
-                                    right: Dimens.p_11,
-                                  ),
+                                padding: EdgeInsets.only(
+                                  right: Dimens.p_11,
+                                ),
                                 child: InkWell(
                                   onTap: _togglePassword,
                                   child: AppSvgIcon(
@@ -230,20 +307,20 @@ class _SignInScreenState extends State<SignInScreen>
                               children: [
                                 Expanded(child: Container()),
                                 Expanded(
-                                    child: InkWell(
-                                      onTap: () {
+                                  child: InkWell(
+                                    onTap: () {
 
-                                      },
-                                      child: Text(
-                                        L10n.of(context)
-                                            .translate('signin_forgot_password_btn'),
-                                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                          color: FinfulColor.information500,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        textAlign: TextAlign.end,
+                                    },
+                                    child: Text(
+                                      L10n.of(context)
+                                          .translate('signin_forgot_password_btn'),
+                                      style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                        color: FinfulColor.information500,
+                                        fontWeight: FontWeight.w600,
                                       ),
+                                      textAlign: TextAlign.end,
                                     ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -358,13 +435,11 @@ class _SignInScreenState extends State<SignInScreen>
                             ),
                             const SizedBox(height: Dimens.p_104),
                             InkWell(
-                              onTap: () {
-
-                              },
+                              onTap: _gotoSignUpPressed,
                               child: Container(
                                 width: double.infinity,
                                 padding: EdgeInsets.symmetric(
-                                  vertical: Dimens.p_8
+                                    vertical: Dimens.p_8
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,

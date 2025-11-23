@@ -1,5 +1,6 @@
 import 'package:finful_app/app/constants/route.dart';
 import 'package:finful_app/app/presentation/journey/dashboard/dashboard_router.dart';
+import 'package:finful_app/app/presentation/journey/schedule_expert/schedule_expert_router.dart';
 import 'package:finful_app/app/routes/app_routes.dart';
 import 'package:finful_app/core/presentation/base_router.dart';
 
@@ -18,7 +19,8 @@ class SectionAssumptionsQARouter extends BaseRouter implements ISectionAssumptio
 
   @override
   void gotoScheduleRequest() {
-    // TODO: implement gotoSectionSpending
+    final router = ScheduleExpertRouter();
+    router.start();
   }
 
   @override

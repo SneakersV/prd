@@ -30,7 +30,9 @@ class SectionOnboardingRouter extends BaseRouter implements ISectionOnboardingRo
 
   @override
   void gotoSignIn() {
-    final router = SignInRouter();
+    final router = SignInRouter(
+      entryFrom: SignInEntryFrom.other,
+    );
     router.start();
   }
 

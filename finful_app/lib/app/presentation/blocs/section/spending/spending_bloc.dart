@@ -129,15 +129,11 @@ class SpendingBloc extends BaseBloc<SpendingEvent, SpendingState>
     }
 
     try {
-      final validSpendingAnswersFilled = state.sectionSpendings.toValidAnswersFilled;
-      if (validSpendingAnswersFilled.isNotEmpty) {
-        // gui familySupport answers va spending answers
-        List<SectionAnswerModel> mergedAnswersFilled = event.familySupportAnswersFilled;
-        mergedAnswersFilled.addAll(validSpendingAnswersFilled);
-        mergedAnswersFilled.toList();
+      final validAnswersFilled = state.sectionSpendings.toValidAnswersFilled;
+      if (validAnswersFilled.isNotEmpty) {
         final calculateResult = await _planInteractor.updateSectionSpendingOfPlan(
           planId: planId!,
-          answersFilled: mergedAnswersFilled,
+          answersFilled: validAnswersFilled,
         );
         if (calculateResult != null) {
           emit(SpendingCalculateSuccess(
