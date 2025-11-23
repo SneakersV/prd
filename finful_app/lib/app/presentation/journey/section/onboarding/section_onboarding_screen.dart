@@ -221,73 +221,79 @@ class _SectionOnboardingScreenState extends State<SectionOnboardingScreen>
             listener: (_, state) {},
           ),
         ],
-        child: PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (bool didPop, _) {
-            _onBackPressed();
-          },
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: FinfulImage(
-                  type: FinfulImageType.asset,
-                  source: ImageConstants.imgOnboardingBg,
-                  width: double.infinity,
-                  height: double.infinity,
-                ),
-              ),
-              Positioned.fill(
-                child: Scaffold(
-                  resizeToAvoidBottomInset: true,
-                  backgroundColor: Colors.transparent,
-                  appBar: showAppBar ? FinfulAppBar(
-                    forceMaterialTransparency: true,
-                    leadingIcon: AppSvgIcon(
-                      IconConstants.icBack,
-                      width: FinfulDimens.iconMd,
-                      height: FinfulDimens.iconMd,
-                      color: FinfulColor.white,
-                    ),
-                    onLeadingPressed: _onBackPressed,
-                  ) : null,
-                  body: _ContentView(
-                    showAppBar: showAppBar,
+        child: SafeArea(
+          top: false,
+          bottom: false,
+          child: PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (bool didPop, _) {
+              if (didPop) return;
+
+              _onBackPressed();
+            },
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: FinfulImage(
+                    type: FinfulImageType.asset,
+                    source: ImageConstants.imgOnboardingBg,
+                    width: double.infinity,
+                    height: double.infinity,
                   ),
                 ),
-              ),
-              Positioned(
-                bottom: context.queryPaddingBottom,
-                left: FinfulDimens.md,
-                right: FinfulDimens.md,
-                child: Material(
-                  color: Colors.transparent,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      FinfulButton.secondary(
-                        title: L10n.of(context)
-                            .translate('section_onboarding_start_btn'),
-                        onPressed: _onStartFlowPressed,
+                Positioned.fill(
+                  child: Scaffold(
+                    resizeToAvoidBottomInset: true,
+                    backgroundColor: Colors.transparent,
+                    appBar: showAppBar ? FinfulAppBar(
+                      forceMaterialTransparency: true,
+                      leadingIcon: AppSvgIcon(
+                        IconConstants.icBack,
+                        width: FinfulDimens.iconMd,
+                        height: FinfulDimens.iconMd,
+                        color: FinfulColor.white,
                       ),
-                      if (showSignUpFlowBtn)
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: FinfulDimens.xs,
-                            bottom: FinfulDimens.xs,
-                          ),
-                          child: FinfulButton.border(
-                            title: L10n.of(context)
-                                .translate('common_cta_signin'),
-                            borderColor: FinfulColor.white,
-                            isBare: true,
-                            onPressed: _onLoginPressed,
-                          ),
-                        ),
-                    ],
+                      onLeadingPressed: _onBackPressed,
+                    ) : null,
+                    body: _ContentView(
+                      showAppBar: showAppBar,
+                    ),
                   ),
                 ),
-              ),
-            ],
+                Positioned(
+                  bottom: Dimens.p_12 + context.queryPaddingBottom,
+                  left: FinfulDimens.md,
+                  right: FinfulDimens.md,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        FinfulButton.secondary(
+                          title: L10n.of(context)
+                              .translate('section_onboarding_start_btn'),
+                          onPressed: _onStartFlowPressed,
+                        ),
+                        if (showSignUpFlowBtn)
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: FinfulDimens.xs,
+                              bottom: FinfulDimens.xs,
+                            ),
+                            child: FinfulButton.border(
+                              title: L10n.of(context)
+                                  .translate('common_cta_signin'),
+                              borderColor: FinfulColor.white,
+                              isBare: true,
+                              onPressed: _onLoginPressed,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

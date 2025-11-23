@@ -186,302 +186,309 @@ class _SignInScreenState extends State<SignInScreen>
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: _mapToBlocListeners,
-      child: PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (bool didPop, _) {
-          _onBackPressed();
-        },
-        child: Scaffold(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          resizeToAvoidBottomInset: true,
-          appBar: FinfulAppBar(
-            backgroundColor: Colors.transparent,
-            forceMaterialTransparency: true,
-            leadingIcon: AppSvgIcon(
-              IconConstants.icBack,
-              width: FinfulDimens.iconMd,
-              height: FinfulDimens.iconMd,
-              color: FinfulColor.white,
-            ),
-            onLeadingPressed: _onBackPressed,
-          ),
-          body: GestureDetector(
-            onTap: _handleUnFocus,
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: FinfulDimens.md
-              ),
-              child: Form(
-                key: _formKey,
-                child: FocusScope(
-                  node: _focusScopeNode,
-                  child: CustomScrollView(
-                    slivers: [
-                      SliverPadding(
-                        padding: EdgeInsets.only(
-                          top: Dimens.p_44,
-                        ),
-                        sliver: SliverToBoxAdapter(
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: Column(
-                              children: [
-                                Text(
-                                  L10n.of(context)
-                                      .translate('signin_title'),
-                                  style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                                    fontSize: Dimens.p_22,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: FinfulDimens.xs),
-                                MyTextSpan(
-                                  text: L10n.of(context)
-                                      .translate('signin_subtitle'),
-                                  defaultStyle: Theme.of(context).textTheme.displaySmall!.copyWith(
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  boldStyle: const TextStyle(
-                                    color: FinfulColor.brandPrimary,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  maxLines: 5,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      SliverPadding(
-                        padding: EdgeInsets.only(
-                          top: Dimens.p_80,
-                        ),
-                        sliver: SliverToBoxAdapter(
-                          child: Column(
-                            children: [
-                              FinfulTextInput.single(
-                                controller: _emailController,
-                                focusNode: _emailNode,
-                                backgroundColor: FinfulColor.textFieldBgColor,
-                                height: FinfulTextInputHeight.md,
-                                hintText: L10n.of(context)
-                                    .translate('signin_email_hint'),
-                                keyboardType: TextInputType.emailAddress,
-                                textInputAction: TextInputAction.go,
-                                prefixIcon: AppSvgIcon(
-                                  IconConstants.icGoogle,
-                                  width: Dimens.p_20,
-                                  height: Dimens.p_20,
-                                ),
-                              ),
-                              SizedBox(height: FinfulDimens.md),
-                              FinfulTextInput.single(
-                                controller: _passwordController,
-                                focusNode: _passwordNode,
-                                height: FinfulTextInputHeight.md,
-                                backgroundColor: FinfulColor.textFieldBgColor,
-                                obscureText: _obscurePassword,
-                                textInputAction: TextInputAction.done,
-                                prefixIcon: AppSvgIcon(
-                                  IconConstants.icGoogle,
-                                  width: Dimens.p_20,
-                                  height: Dimens.p_20,
-                                ),
-                                suffixIcon: Padding(
-                                  padding: EdgeInsets.only(
-                                    right: Dimens.p_11,
-                                  ),
-                                  child: InkWell(
-                                    onTap: _togglePassword,
-                                    child: AppSvgIcon(
-                                      IconConstants.icGoogle,
-                                      width: Dimens.p_20,
-                                      height: Dimens.p_20,
-                                    ),
-                                  ),
-                                ),
-                                hintText: L10n.of(context)
-                                    .translate('signin_password_hint'),
-                                keyboardType: TextInputType.text,
-                                validator: _onEmailPasswordValidator,
-                              ),
-                              const SizedBox(height: Dimens.p_12),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(child: Container()),
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
+      child: SafeArea(
+        top: false,
+        bottom: false,
+        child: PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (bool didPop, _) {
+            if (didPop) return;
 
-                                      },
-                                      child: Text(
-                                        L10n.of(context)
-                                            .translate('signin_forgot_password_btn'),
-                                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                          color: FinfulColor.information500,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        textAlign: TextAlign.end,
-                                      ),
+            _onBackPressed();
+          },
+          child: Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            resizeToAvoidBottomInset: true,
+            appBar: FinfulAppBar(
+              backgroundColor: Colors.transparent,
+              forceMaterialTransparency: true,
+              leadingIcon: AppSvgIcon(
+                IconConstants.icBack,
+                width: FinfulDimens.iconMd,
+                height: FinfulDimens.iconMd,
+                color: FinfulColor.white,
+              ),
+              onLeadingPressed: _onBackPressed,
+            ),
+            body: GestureDetector(
+              onTap: _handleUnFocus,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: FinfulDimens.md
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: FocusScope(
+                    node: _focusScopeNode,
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverPadding(
+                          padding: EdgeInsets.only(
+                            top: Dimens.p_44,
+                          ),
+                          sliver: SliverToBoxAdapter(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    L10n.of(context)
+                                        .translate('signin_title'),
+                                    style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                                      fontSize: Dimens.p_22,
                                     ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: FinfulDimens.xs),
+                                  MyTextSpan(
+                                    text: L10n.of(context)
+                                        .translate('signin_subtitle'),
+                                    defaultStyle: Theme.of(context).textTheme.displaySmall!.copyWith(
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    boldStyle: const TextStyle(
+                                      color: FinfulColor.brandPrimary,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 5,
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: Dimens.p_25),
-                              FinfulButton.primary(
-                                title: L10n.of(context)
-                                    .translate('common_cta_signin'),
-                                color: FinfulColor.btnAuth,
-                                onPressed: _onSubmitPressed,
-                              ),
-                              const SizedBox(height: Dimens.p_25),
-                              SizedBox(
-                                width: double.infinity,
-                                height: Dimens.p_18,
-                                child: Row(
+                            ),
+                          ),
+                        ),
+                        SliverPadding(
+                          padding: EdgeInsets.only(
+                            top: Dimens.p_80,
+                          ),
+                          sliver: SliverToBoxAdapter(
+                            child: Column(
+                              children: [
+                                FinfulTextInput.single(
+                                  controller: _emailController,
+                                  focusNode: _emailNode,
+                                  backgroundColor: FinfulColor.textFieldBgColor,
+                                  height: FinfulTextInputHeight.md,
+                                  hintText: L10n.of(context)
+                                      .translate('signin_email_hint'),
+                                  keyboardType: TextInputType.emailAddress,
+                                  textInputAction: TextInputAction.go,
+                                  prefixIcon: AppSvgIcon(
+                                    IconConstants.icGoogle,
+                                    width: Dimens.p_20,
+                                    height: Dimens.p_20,
+                                  ),
+                                ),
+                                SizedBox(height: FinfulDimens.md),
+                                FinfulTextInput.single(
+                                  controller: _passwordController,
+                                  focusNode: _passwordNode,
+                                  height: FinfulTextInputHeight.md,
+                                  backgroundColor: FinfulColor.textFieldBgColor,
+                                  obscureText: _obscurePassword,
+                                  textInputAction: TextInputAction.done,
+                                  prefixIcon: AppSvgIcon(
+                                    IconConstants.icGoogle,
+                                    width: Dimens.p_20,
+                                    height: Dimens.p_20,
+                                  ),
+                                  suffixIcon: Padding(
+                                    padding: EdgeInsets.only(
+                                      right: Dimens.p_11,
+                                    ),
+                                    child: InkWell(
+                                      onTap: _togglePassword,
+                                      child: AppSvgIcon(
+                                        IconConstants.icGoogle,
+                                        width: Dimens.p_20,
+                                        height: Dimens.p_20,
+                                      ),
+                                    ),
+                                  ),
+                                  hintText: L10n.of(context)
+                                      .translate('signin_password_hint'),
+                                  keyboardType: TextInputType.text,
+                                  validator: _onEmailPasswordValidator,
+                                ),
+                                const SizedBox(height: Dimens.p_12),
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
+                                    Expanded(child: Container()),
                                     Expanded(
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: Dimens.p_1,
-                                        decoration: BoxDecoration(
-                                            color: FinfulColor.stroke,
-                                            border: Border.all(
-                                              color: FinfulColor.stroke,
-                                              width: Dimens.p_1,
-                                              style: BorderStyle.solid,
-                                            )
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: FinfulDimens.md
-                                      ),
-                                      child: Text(
-                                        'hoặc',
-                                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          color: FinfulColor.grey,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: Dimens.p_1,
-                                        decoration: BoxDecoration(
-                                            color: FinfulColor.white,
-                                            border: Border.all(
-                                              color: FinfulColor.stroke,
-                                              width: Dimens.p_1,
-                                              style: BorderStyle.solid,
-                                            )
+                                      child: InkWell(
+                                        onTap: () {
+
+                                        },
+                                        child: Text(
+                                          L10n.of(context)
+                                              .translate('signin_forgot_password_btn'),
+                                          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                            color: FinfulColor.information500,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          textAlign: TextAlign.end,
                                         ),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                              const SizedBox(height: Dimens.p_25),
-                              FinfulButton.border(
-                                title: L10n.of(context)
-                                    .translate('signin_google_btn'),
-                                borderColor: FinfulColor.btnBorderSocial,
-                                bgColor: FinfulColor.btnBgSocial,
-                                prefixIcon: Padding(
-                                  padding: EdgeInsets.only(
-                                    right: Dimens.p_10,
-                                  ),
-                                  child: AppSvgIcon(
-                                    IconConstants.icGoogle,
-                                    width: Dimens.p_18,
-                                    height: Dimens.p_18,
-                                  ),
+                                const SizedBox(height: Dimens.p_25),
+                                FinfulButton.primary(
+                                  title: L10n.of(context)
+                                      .translate('common_cta_signin'),
+                                  color: FinfulColor.btnAuth,
+                                  onPressed: _onSubmitPressed,
                                 ),
-                                textStyle: TextStyle(
-                                  fontSize: Dimens.p_14,
-                                  height: Dimens.p_14 / Dimens.p_14,
-                                  fontWeight: FontWeight.w500,
-                                  color: FinfulColor.textW,
-                                ),
-                                onPressed: () {
-
-                                },
-                              ),
-                              const SizedBox(height: Dimens.p_15),
-                              FinfulButton.border(
-                                title: L10n.of(context)
-                                    .translate('signin_apple_btn'),
-                                borderColor: FinfulColor.btnBorderSocial,
-                                bgColor: FinfulColor.btnBgSocial,
-                                prefixIcon: Padding(
-                                  padding: EdgeInsets.only(
-                                    right: Dimens.p_10,
-                                  ),
-                                  child: AppSvgIcon(
-                                    IconConstants.icGoogle,
-                                    width: Dimens.p_18,
-                                    height: Dimens.p_18,
-                                  ),
-                                ),
-                                textStyle: TextStyle(
-                                  fontSize: Dimens.p_14,
-                                  height: Dimens.p_14 / Dimens.p_14,
-                                  fontWeight: FontWeight.w500,
-                                  color: FinfulColor.textW,
-                                ),
-                                onPressed: () {
-
-                                },
-                              ),
-                              const SizedBox(height: Dimens.p_104),
-                              InkWell(
-                                onTap: _gotoSignUpPressed,
-                                child: Container(
+                                const SizedBox(height: Dimens.p_25),
+                                SizedBox(
                                   width: double.infinity,
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: Dimens.p_8
-                                  ),
+                                  height: Dimens.p_18,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        L10n.of(context)
-                                            .translate('signin_require_signup_title'),
-                                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                          color: FinfulColor.grey2,
-                                          fontWeight: FontWeight.w500,
+                                      Expanded(
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: Dimens.p_1,
+                                          decoration: BoxDecoration(
+                                              color: FinfulColor.stroke,
+                                              border: Border.all(
+                                                color: FinfulColor.stroke,
+                                                width: Dimens.p_1,
+                                                style: BorderStyle.solid,
+                                              )
+                                          ),
                                         ),
                                       ),
-                                      const SizedBox(width: Dimens.p_6),
-                                      Text(
-                                        L10n.of(context)
-                                            .translate('common_cta_signup'),
-                                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                          color: FinfulColor.information500,
-                                          fontWeight: FontWeight.w600,
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: FinfulDimens.md
+                                        ),
+                                        child: Text(
+                                          'hoặc',
+                                          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                                            fontWeight: FontWeight.w400,
+                                            color: FinfulColor.grey,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: Dimens.p_1,
+                                          decoration: BoxDecoration(
+                                              color: FinfulColor.white,
+                                              border: Border.all(
+                                                color: FinfulColor.stroke,
+                                                width: Dimens.p_1,
+                                                style: BorderStyle.solid,
+                                              )
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                              SizedBox(height: Dimens.p_26 + context.queryPaddingBottom),
-                            ],
+                                const SizedBox(height: Dimens.p_25),
+                                FinfulButton.border(
+                                  title: L10n.of(context)
+                                      .translate('signin_google_btn'),
+                                  borderColor: FinfulColor.btnBorderSocial,
+                                  bgColor: FinfulColor.btnBgSocial,
+                                  prefixIcon: Padding(
+                                    padding: EdgeInsets.only(
+                                      right: Dimens.p_10,
+                                    ),
+                                    child: AppSvgIcon(
+                                      IconConstants.icGoogle,
+                                      width: Dimens.p_18,
+                                      height: Dimens.p_18,
+                                    ),
+                                  ),
+                                  textStyle: TextStyle(
+                                    fontSize: Dimens.p_14,
+                                    height: Dimens.p_14 / Dimens.p_14,
+                                    fontWeight: FontWeight.w500,
+                                    color: FinfulColor.textW,
+                                  ),
+                                  onPressed: () {
+
+                                  },
+                                ),
+                                const SizedBox(height: Dimens.p_15),
+                                FinfulButton.border(
+                                  title: L10n.of(context)
+                                      .translate('signin_apple_btn'),
+                                  borderColor: FinfulColor.btnBorderSocial,
+                                  bgColor: FinfulColor.btnBgSocial,
+                                  prefixIcon: Padding(
+                                    padding: EdgeInsets.only(
+                                      right: Dimens.p_10,
+                                    ),
+                                    child: AppSvgIcon(
+                                      IconConstants.icGoogle,
+                                      width: Dimens.p_18,
+                                      height: Dimens.p_18,
+                                    ),
+                                  ),
+                                  textStyle: TextStyle(
+                                    fontSize: Dimens.p_14,
+                                    height: Dimens.p_14 / Dimens.p_14,
+                                    fontWeight: FontWeight.w500,
+                                    color: FinfulColor.textW,
+                                  ),
+                                  onPressed: () {
+
+                                  },
+                                ),
+                                const SizedBox(height: Dimens.p_104),
+                                InkWell(
+                                  onTap: _gotoSignUpPressed,
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: Dimens.p_8
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          L10n.of(context)
+                                              .translate('signin_require_signup_title'),
+                                          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                            color: FinfulColor.grey2,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        const SizedBox(width: Dimens.p_6),
+                                        Text(
+                                          L10n.of(context)
+                                              .translate('common_cta_signup'),
+                                          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                            color: FinfulColor.information500,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: Dimens.p_26 + context.queryPaddingBottom),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
+        )
+        ,
       ),
     );
   }

@@ -115,7 +115,7 @@ class _ReceivedRequestScreenState extends State<ReceivedRequestScreen>
             builder: (_, state) {
               if (state.loggedInUser == null) {
                 return Positioned(
-                  bottom: context.queryPaddingBottom,
+                  bottom: Dimens.p_12 + context.queryPaddingBottom,
                   left: FinfulDimens.md,
                   right: FinfulDimens.md,
                   child: const SizedBox(),
@@ -123,7 +123,7 @@ class _ReceivedRequestScreenState extends State<ReceivedRequestScreen>
               }
 
               return Positioned(
-                bottom: context.queryPaddingBottom,
+                bottom: Dimens.p_12 + context.queryPaddingBottom,
                 left: FinfulDimens.md,
                 right: FinfulDimens.md,
                 child: Material(

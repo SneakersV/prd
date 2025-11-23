@@ -199,7 +199,7 @@ class _SignUpIntroScreenState extends State<SignUpIntroScreen>
           Positioned(
             left: FinfulDimens.md,
             right: FinfulDimens.md,
-            bottom: context.queryPaddingBottom,
+            bottom: Dimens.p_12 + context.queryPaddingBottom,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

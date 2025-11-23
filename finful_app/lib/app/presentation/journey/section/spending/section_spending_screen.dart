@@ -11,7 +11,6 @@ import 'package:finful_app/core/extension/context_extension.dart';
 import 'package:finful_app/core/localization/l10n.dart';
 import 'package:finful_app/core/presentation/base_screen_mixin.dart';
 import 'package:flutter/material.dart';
-
 import 'section_spending_router.dart';
 
 class _ContentView extends StatelessWidget {
@@ -134,60 +133,66 @@ class _SectionSpendingScreenState extends State<SectionSpendingScreen>
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (bool didPop, _) {
-        _onBackPressed();
-      },
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: FinfulImage(
-              type: FinfulImageType.asset,
-              source: ImageConstants.imgSpendingBg,
-              width: double.infinity,
-              height: double.infinity,
-            ),
-          ),
-          Positioned.fill(
-            child: Scaffold(
-              resizeToAvoidBottomInset: true,
-              backgroundColor: Colors.transparent,
-              appBar: showAppBar ? FinfulAppBar(
-                forceMaterialTransparency: true,
-                leadingIcon: AppSvgIcon(
-                  IconConstants.icBack,
-                  width: FinfulDimens.iconMd,
-                  height: FinfulDimens.iconMd,
-                  color: FinfulColor.white,
-                ),
-                onLeadingPressed: _onBackPressed,
-              ) : null,
-              body: _ContentView(
-                showAppBar: showAppBar,
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (bool didPop, _) {
+          if (didPop) return;
+
+          _onBackPressed();
+        },
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: FinfulImage(
+                type: FinfulImageType.asset,
+                source: ImageConstants.imgSpendingBg,
+                width: double.infinity,
+                height: double.infinity,
               ),
             ),
-          ),
-          Positioned(
-            bottom: context.queryPaddingBottom,
-            left: FinfulDimens.md,
-            right: FinfulDimens.md,
-            child: Material(
-              color: Colors.transparent,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  FinfulButton.secondary(
-                    title: L10n.of(context)
-                        .translate('section_spending_cta_btn'),
-                    onPressed: _onStartFlowPressed,
+            Positioned.fill(
+              child: Scaffold(
+                resizeToAvoidBottomInset: true,
+                backgroundColor: Colors.transparent,
+                appBar: showAppBar ? FinfulAppBar(
+                  forceMaterialTransparency: true,
+                  leadingIcon: AppSvgIcon(
+                    IconConstants.icBack,
+                    width: FinfulDimens.iconMd,
+                    height: FinfulDimens.iconMd,
+                    color: FinfulColor.white,
                   ),
-                  SizedBox(height: Dimens.p_18),
-                ],
+                  onLeadingPressed: _onBackPressed,
+                ) : null,
+                body: _ContentView(
+                  showAppBar: showAppBar,
+                ),
               ),
             ),
-          ),
-        ],
+            Positioned(
+              bottom: Dimens.p_12 + context.queryPaddingBottom,
+              left: FinfulDimens.md,
+              right: FinfulDimens.md,
+              child: Material(
+                color: Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FinfulButton.secondary(
+                      title: L10n.of(context)
+                          .translate('section_spending_cta_btn'),
+                      onPressed: _onStartFlowPressed,
+                    ),
+                    SizedBox(height: Dimens.p_18),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
