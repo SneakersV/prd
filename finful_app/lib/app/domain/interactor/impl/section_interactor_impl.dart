@@ -77,7 +77,7 @@ class SectionInteractorImpl implements SectionInteractor {
   }) async {
     final answerRequest = answersFilled.toRequest();
     final request = SectionRequest(
-      currentSection: SectionType.familySupport.toValue(),
+      currentSection: SectionType.spending.toValue(),
       answers: answerRequest,
     );
     final sectionResponse = await _sectionRepository.getSectionQA(

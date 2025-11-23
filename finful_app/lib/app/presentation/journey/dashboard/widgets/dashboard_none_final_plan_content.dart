@@ -2,7 +2,6 @@ import 'package:finful_app/app/constants/constants.dart';
 import 'package:finful_app/app/data/enum/section.dart';
 import 'package:finful_app/app/domain/model/extension/extension.dart';
 import 'package:finful_app/app/presentation/blocs/common/session/session.dart';
-import 'package:finful_app/app/presentation/blocs/get_plan/get_plan.dart';
 import 'package:finful_app/app/presentation/blocs/get_section_progress/get_section_progress.dart';
 import 'package:finful_app/app/presentation/journey/dashboard/ui_model/section_dashboard_item.dart';
 import 'package:finful_app/app/presentation/journey/dashboard/widgets/dashboard_static_schedule.dart';

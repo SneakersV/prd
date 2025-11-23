@@ -139,7 +139,7 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
     );
   }
 
-  void _onAfterCalculatePressed() {
+  void _onGoBackDashboardPressed() {
     router.goBackDashboard();
   }
 
@@ -212,6 +212,277 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
     }
   }
 
+  Widget _buildButtonFormCaseDefault() {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: FinfulDimens.md,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FinfulButton.primary(
+            title: L10n.of(context)
+                .translate('common_cta_back_dashboard_btn'),
+            onPressed: _onGoBackDashboardPressed,
+          ),
+          const SizedBox(height: Dimens.p_18),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtonFormCase1(
+      int? earliestPurchaseYear,
+      int? confirmedPurchaseYear) {
+    String defaultYearBtn1Txt = earliestPurchaseYear != null && earliestPurchaseYear > 0
+        ? earliestPurchaseYear.toString() : L10n.of(context)
+        .translate('common_dummy_default_year');
+    String defaultYearBtn2Txt = confirmedPurchaseYear != null && confirmedPurchaseYear > 0
+        ? confirmedPurchaseYear.toString() : L10n.of(context)
+        .translate('common_dummy_default_year');
+    final prefixYearBtnTxt = L10n.of(context)
+        .translate('section_assumptions_result_btn_form_btn_buy_year');
+    String yearBtn1Txt = defaultYearBtn1Txt;
+    String yearBtn2Txt = defaultYearBtn2Txt;
+
+    final borderBtnTextStyle = Theme.of(context).textTheme.headlineSmall!.copyWith(
+      height: Dimens.p_14 / Dimens.p_14,
+      fontWeight: FontWeight.w600,
+    );
+
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: FinfulDimens.md,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            L10n.of(context)
+                .translate('section_assumptions_result_btn_form_title_case1'),
+            style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+              fontSize: Dimens.p_15,
+              height: Dimens.p_24 / Dimens.p_15,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: Dimens.p_12),
+          FinfulButton.primary(
+            title: L10n.of(context)
+                .translate('common_cta_back_dashboard_btn'),
+            onPressed: _onGoBackDashboardPressed,
+          ),
+          const SizedBox(height: Dimens.p_12),
+          FinfulButton.border(
+            title: "$prefixYearBtnTxt$yearBtn1Txt",
+            borderColor: FinfulColor.btnBorderSocial,
+            bgColor: FinfulColor.btnBgSocial,
+            textStyle: borderBtnTextStyle,
+            onPressed: () {
+
+            },
+          ),
+          const SizedBox(height: Dimens.p_12),
+          FinfulButton.secondary(
+            title: "$prefixYearBtnTxt$yearBtn2Txt",
+            onPressed: () {
+
+            },
+          ),
+          const SizedBox(height: Dimens.p_12),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtonFormCase2(int? earliestPurchaseYear) {
+    String defaultYearTxt = earliestPurchaseYear != null && earliestPurchaseYear > 0
+        ? earliestPurchaseYear.toString() : L10n.of(context)
+        .translate('common_dummy_default_year');
+    final prefixYearBtnTxt = L10n.of(context)
+        .translate('section_assumptions_result_btn_form_btn_buy_year');
+    String yearBtn1Txt = defaultYearTxt;
+
+    final borderBtnTextStyle = Theme.of(context).textTheme.headlineSmall!.copyWith(
+      height: Dimens.p_14 / Dimens.p_14,
+      fontWeight: FontWeight.w600,
+    );
+
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: FinfulDimens.md,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            L10n.of(context)
+                .translate('section_assumptions_result_btn_form_title_case2'),
+            style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+              fontSize: Dimens.p_15,
+              height: Dimens.p_24 / Dimens.p_15,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: Dimens.p_12),
+          FinfulButton.primary(
+            title: L10n.of(context)
+                .translate('common_cta_back_dashboard_btn'),
+            onPressed: _onGoBackDashboardPressed,
+          ),
+          const SizedBox(height: Dimens.p_12),
+          FinfulButton.border(
+            title: L10n.of(context)
+                .translate('section_assumptions_result_btn_form_btn_adjust_case2'),
+            borderColor: FinfulColor.btnBorderSocial,
+            bgColor: FinfulColor.btnBgSocial,
+            textStyle: borderBtnTextStyle,
+            onPressed: () {
+
+            },
+          ),
+          const SizedBox(height: Dimens.p_12),
+          FinfulButton.secondary(
+            title: "$prefixYearBtnTxt$yearBtn1Txt",
+            onPressed: () {
+
+            },
+          ),
+          const SizedBox(height: Dimens.p_12),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtonFormCase3(int? earliestPurchaseYear) {
+    String defaultYearTxt = earliestPurchaseYear != null && earliestPurchaseYear > 0
+        ? earliestPurchaseYear.toString() : L10n.of(context)
+        .translate('common_dummy_default_year');
+    final prefixYearBtnTxt = L10n.of(context)
+        .translate('section_assumptions_result_btn_form_btn_plan_case3');
+    String yearBtn1Txt = defaultYearTxt;
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: FinfulDimens.md,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FinfulButton.primary(
+            title: L10n.of(context)
+                .translate('common_cta_back_dashboard_btn'),
+            onPressed: _onGoBackDashboardPressed,
+          ),
+          const SizedBox(height: Dimens.p_12),
+          FinfulButton.secondary(
+            title: "$prefixYearBtnTxt$yearBtn1Txt",
+            onPressed: () {
+
+            },
+          ),
+          const SizedBox(height: Dimens.p_12),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtonFormCase4() {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: FinfulDimens.md,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FinfulButton.primary(
+            title: L10n.of(context)
+                .translate('common_cta_back_dashboard_btn'),
+            onPressed: _onGoBackDashboardPressed,
+          ),
+          const SizedBox(height: Dimens.p_12),
+          FinfulButton.secondary(
+            title: L10n.of(context)
+                .translate('section_assumptions_result_btn_form_btn_chat_expert_case4'),
+            onPressed: () {
+
+            },
+          ),
+          const SizedBox(height: Dimens.p_12),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtonFormCase5() {
+    final borderBtnTextStyle = Theme.of(context).textTheme.headlineSmall!.copyWith(
+      height: Dimens.p_14 / Dimens.p_14,
+      fontWeight: FontWeight.w600,
+    );
+
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: FinfulDimens.md,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FinfulButton.primary(
+            title: L10n.of(context)
+                .translate('common_cta_back_dashboard_btn'),
+            onPressed: _onGoBackDashboardPressed,
+          ),
+          const SizedBox(height: Dimens.p_12),
+          FinfulButton.border(
+            title: L10n.of(context)
+                .translate('section_assumptions_result_btn_form_btn_accumulate_case5'),
+            borderColor: FinfulColor.btnBorderSocial,
+            bgColor: FinfulColor.btnBgSocial,
+            textStyle: borderBtnTextStyle,
+            onPressed: () {
+
+            },
+          ),
+          const SizedBox(height: Dimens.p_12),
+          FinfulButton.secondary(
+            title: L10n.of(context)
+                .translate('section_assumptions_result_btn_form_btn_schedule_case5'),
+            onPressed: () {
+              router.gotoScheduleRequest();
+            },
+          ),
+          const SizedBox(height: Dimens.p_12),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCalculatedButtonForm(AssumptionsCalculateSuccess state) {
+    final caseNumber = state.calculateResult?.sectionResult?.caseNumber;
+    final earliestPurchaseYear = state.calculateResult?.sectionResult?.earliestPurchaseYear;
+    final confirmedPurchaseYear = state.calculateResult?.confirmedPurchaseYear;
+    switch (caseNumber) {
+      case null:
+      case -1:
+        return _buildButtonFormCaseDefault();
+      case 1:
+        return _buildButtonFormCase1(earliestPurchaseYear, confirmedPurchaseYear);
+      case 2:
+        return _buildButtonFormCase2(earliestPurchaseYear);
+      case 3:
+        return _buildButtonFormCase3(earliestPurchaseYear);
+      case 4:
+        return _buildButtonFormCase4();
+      case 5:
+        return _buildButtonFormCase5();
+      default:
+        return _buildButtonFormCaseDefault();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AssumptionsBloc, AssumptionsState>(
@@ -278,7 +549,7 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
                   ),
                   SliverPadding(
                     padding: EdgeInsets.only(
-                      bottom: Dimens.p_64 + context.queryPaddingBottom,
+                      bottom: Dimens.p_64 * 3 + context.queryPaddingBottom,
                     ),
                     sliver: SliverToBoxAdapter(
                       child: SectionAssumptionsQAContent(
@@ -315,24 +586,8 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
                     if (state is AssumptionsCalculateInProgress) {
                       return const SizedBox();
                     } else if (state is AssumptionsCalculateSuccess) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: FinfulDimens.md,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            FinfulButton.primary(
-                              title: L10n.of(context)
-                                  .translate('common_cta_back_dashboard_btn'),
-                              onPressed: _onAfterCalculatePressed,
-                            ),
-                            const SizedBox(height: Dimens.p_18),
-                          ],
-                        ),
-                      );
+                      return _buildCalculatedButtonForm(state);
                     }
-
                     return const SizedBox();
                   }
 

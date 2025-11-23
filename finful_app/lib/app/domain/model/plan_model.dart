@@ -32,6 +32,7 @@ class PlanModel extends Equatable {
   final String? planName;
   final SectionType sectionType;
   final PlanSectionResultModel? sectionResult;
+  final int? confirmedPurchaseYear;
 
   const PlanModel({
     this.planId,
@@ -39,6 +40,7 @@ class PlanModel extends Equatable {
     this.planName,
     this.sectionType = SectionType.undefined,
     this.sectionResult,
+    this.confirmedPurchaseYear,
   });
 
   @override
@@ -48,5 +50,6 @@ class PlanModel extends Equatable {
     planName,
     sectionType,
     sectionResult,
+    confirmedPurchaseYear,
   ];
 }

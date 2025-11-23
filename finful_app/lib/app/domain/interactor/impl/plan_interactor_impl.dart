@@ -126,6 +126,7 @@ class PlanInteractorImpl implements PlanInteractor {
       planName: planData.planName,
       sectionType: sectionType,
       sectionResult: planSectionResult,
+      confirmedPurchaseYear: planData.confirmedPurchaseYear,
     );
 
     return planModel;
