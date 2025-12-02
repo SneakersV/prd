@@ -67,7 +67,6 @@ class SectionAssumptionsLineChart1 extends StatefulWidget {
   State<SectionAssumptionsLineChart1> createState() => _SectionAssumptionsLineChart1State();
 }
 
-
 class _SectionAssumptionsLineChart1State extends State<SectionAssumptionsLineChart1> {
   final int startYear = DateTime.now().year - 1; // last year
 
@@ -114,6 +113,7 @@ class _SectionAssumptionsLineChart1State extends State<SectionAssumptionsLineCha
             return LineTooltipItem(
               moneyText,
               Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: FinfulColor.lineChartText,
                 height: Dimens.p_15 / Dimens.p_12,
                 fontWeight: FontWeight.w400,
               ),
@@ -205,6 +205,7 @@ class _SectionAssumptionsLineChart1State extends State<SectionAssumptionsLineCha
               child: Text(
                 '${startYear + index}',
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: FinfulColor.lineChartText,
                   height: Dimens.p_15 / Dimens.p_12,
                   fontWeight: FontWeight.w400,
                 ),
@@ -334,7 +335,7 @@ class _SectionAssumptionsLineChart1State extends State<SectionAssumptionsLineCha
             children: [
               FinfulImage(
                 type: FinfulImageType.asset,
-                source: ImageConstants.imgChartDot,
+                source: ImageConstants.imgLineChartDot,
                 width: Dimens.p_16,
                 height: Dimens.p_16,
               ),
@@ -343,6 +344,7 @@ class _SectionAssumptionsLineChart1State extends State<SectionAssumptionsLineCha
                 L10n.of(context)
                     .translate('section_chart_dot_salary_label'),
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: FinfulColor.lineChartText,
                   height: Dimens.p_15 / Dimens.p_12,
                   fontWeight: FontWeight.w400,
                 )

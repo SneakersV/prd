@@ -110,4 +110,8 @@ class FinfulColor {
 
   // chart
   static final Color dotGlowLayer1 = brandPrimary.withValues(alpha: 0.25);
+  static final Color lineChartText = white.withValues(alpha: 0.8);
+  static final Color barChartDot = white.withValues(alpha: 0.3);
+  static const Color barChartContentBorrow = Color(0xFFFFC344);
+  static final Color barChartText = white.withValues(alpha: 0.8);
 }

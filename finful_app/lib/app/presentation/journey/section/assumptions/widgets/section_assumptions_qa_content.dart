@@ -3,6 +3,7 @@ import 'package:finful_app/app/data/enum/section.dart';
 import 'package:finful_app/app/data/model/response/section_response.dart';
 import 'package:finful_app/app/domain/model/section_model.dart';
 import 'package:finful_app/app/presentation/blocs/section/assumptions/assumptions.dart';
+import 'package:finful_app/app/presentation/journey/section/assumptions/widgets/charts/section_assumptions_barchart1.dart';
 import 'package:finful_app/app/presentation/journey/section/assumptions/widgets/section_assumptions_option_card.dart';
 import 'package:finful_app/app/presentation/widgets/app_image/FinfulImage.dart';
 import 'package:finful_app/app/presentation/widgets/section/section_options_wrapper.dart';
@@ -107,9 +108,10 @@ class SectionAssumptionsQAContent extends StatelessWidget {
           ),
           const SizedBox(height: Dimens.p_34),
           // todo: chart
-          SectionAssumptionsLineChart1(
-            spots: allSpots,
-          ),
+          // SectionAssumptionsLineChart1(
+          //   spots: allSpots,
+          // ),
+          SectionAssumptionsBarchart1(),
           const SizedBox(height: Dimens.p_40),
           if (listExplanations.isNotEmpty)
             Column(
