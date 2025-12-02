@@ -126,6 +126,7 @@
   "section_radio_invalid_title": "Giá trị không hợp lệ",
   "section_radio_invalid_message": "Hãy lựa chọn một mô tả đúng nhất về bạn!",
   "section_radio_option_left_label": "Mức tăng mục tiêu:",
+  "section_chart_dot_salary_label": "Tiền lương",
   "dashboard_greeting": "Xin chào",
   "dashboard_none_finalPlan_subHeader_title": "Bạn có cần điều chỉnh nhu cầu mua nhà hay tình hình tài chính của mình không?",
   "dashboard_static_schedule_header_title": "Tôi cần được hỗ trợ!",

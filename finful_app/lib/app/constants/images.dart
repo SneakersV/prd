@@ -50,4 +50,7 @@ class ImageConstants {
 
   // bank
   static const String imgQRFinfulBank = 'assets/images/img_qr_finful_bank.png';
+
+  // chart
+  static const String imgChartDot = 'assets/images/img_chart_dot.png';
 }
