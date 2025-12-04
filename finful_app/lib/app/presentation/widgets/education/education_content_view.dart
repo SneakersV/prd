@@ -1,11 +1,17 @@
 import 'package:finful_app/app/constants/images.dart';
+import 'package:finful_app/app/constants/key/BlocConstants.dart';
+import 'package:finful_app/app/presentation/blocs/section/onboarding/onboarding.dart';
+import 'package:finful_app/app/presentation/widgets/app_button/FinfulButton.dart';
 import 'package:finful_app/app/presentation/widgets/app_image/FinfulImage.dart';
 import 'package:finful_app/app/theme/colors.dart';
 import 'package:finful_app/app/theme/dimens.dart';
 import 'package:finful_app/common/constants/dimensions.dart';
+import 'package:finful_app/core/bloc/base/bloc_manager.dart';
 import 'package:finful_app/core/extension/extension.dart';
+import 'package:finful_app/core/localization/l10n.dart';
 import 'package:finful_app/core/mixin/widget_didmount_mixin.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 
 class EducationContentView extends StatefulWidget {
@@ -15,12 +21,14 @@ class EducationContentView extends StatefulWidget {
     required this.title,
     required this.description,
     required this.url,
+    this.isLast = false,
   });
 
   final bool showDivider;
   final String? title;
   final String? description;
   final String? url;
+  final bool isLast;
 
   @override
   State<EducationContentView> createState() => _EducationContentViewState();
@@ -28,18 +36,12 @@ class EducationContentView extends StatefulWidget {
 
 class _EducationContentViewState extends State<EducationContentView>
     with TickerProviderStateMixin, WidgetDidMount<EducationContentView> {
-  late final Future<LottieComposition> _composition;
   late final AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
-    _composition = NetworkLottie(
-      widget.url ?? "",
-      decoder: LottieComposition.decodeGZip,
-      backgroundLoading: true,
-    ).load();
   }
 
   @override
@@ -107,38 +109,36 @@ class _EducationContentViewState extends State<EducationContentView>
               ),
             ) else const SizedBox(),
           const SizedBox(height: Dimens.p_60),
-          FutureBuilder<LottieComposition>(
-            future: _composition,
-            builder: (_, snapshot) {
-              final composition = snapshot.data;
-              if (composition != null) {
-                return SizedBox(
-                  width: context.queryWidth,
-                  height: context.queryWidth * 1.3,
-                  child: Lottie(
-                    controller: _controller,
-                    composition: composition,
-                    frameRate: FrameRate.composition,
-                    fit: BoxFit.contain,
-                    filterQuality: FilterQuality.high,
-                    animate: true,
-                  ),
+          if (widget.url.isNotNullAndEmpty)
+            Lottie.network(
+              widget.url!,
+              controller: _controller,
+              width: context.queryWidth,
+              height: context.queryWidth * 1.3,
+              fit: BoxFit.fill,
+              onLoaded: (composition) {
+                _controller
+                  ..duration = composition.duration
+                  ..forward();
+              },
+            ) else const SizedBox(),
+          const SizedBox(height: Dimens.p_40),
+          if (widget.isLast)
+            BlocBuilder<OnboardingBloc, OnboardingState>(
+              builder: (_, state) {
+                return FinfulButton.secondary(
+                  title: L10n.of(context)
+                      .translate('common_cta_continue'),
+                  onPressed: () {
+                    final nextStep = state.sectionOnboardings.length + 1;
+                    BlocManager().event<OnboardingBloc>(
+                      BlocConstants.sectionOnboarding,
+                      OnboardingGetNextStepStarted(nextStep: nextStep),
+                    );
+                  },
                 );
-              }
-
-              return Center(
-                child: SizedBox(
-                  width: Dimens.p_60,
-                  height: Dimens.p_60,
-                  child: CircularProgressIndicator(
-                    color: FinfulColor.brandPrimary,
-                    backgroundColor: FinfulColor.brandPrimary.withValues(alpha: 0.30),
-                    strokeWidth: Dimens.p_8,
-                  ),
-                ),
-              );
-            },
-          ),
+              },
+            ) else const SizedBox(),
         ],
       ),
     );

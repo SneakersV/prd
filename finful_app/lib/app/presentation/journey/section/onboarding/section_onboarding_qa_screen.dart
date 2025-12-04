@@ -87,6 +87,9 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
   }
 
   void _processAfterFilledAnswer(OnboardingFillAnswerSuccess state) {
+    setState(() {
+      _showEducationView = false;
+    });
     final nextStep = state.sectionOnboardings.length + 1;
     BlocManager().event<OnboardingBloc>(
       BlocConstants.sectionOnboarding,
@@ -95,14 +98,22 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
   }
 
   void _educationContinuePressed(OnboardingState state) {
-    // final nextStep = state.sectionOnboardings.length + 1;
-    // BlocManager().event<OnboardingBloc>(
-    //   BlocConstants.sectionOnboarding,
-    //   OnboardingGetNextStepStarted(nextStep: nextStep),
-    // );
-    setState(() {
-      _showEducationView = true;
-    });
+    final length = state.sectionOnboardings.length;
+    final typeIdx = length - 3;
+    final locationIdx = length - 2;
+    final type = state.sectionOnboardings[typeIdx].answerFilled?.answer;
+    final location = state.sectionOnboardings[locationIdx].answerFilled?.answer;
+    if (type != null && location != null) {
+      setState(() {
+        _showEducationView = true;
+      });
+    } else {
+      final nextStep = state.sectionOnboardings.length + 1;
+      BlocManager().event<OnboardingBloc>(
+        BlocConstants.sectionOnboarding,
+        OnboardingGetNextStepStarted(nextStep: nextStep),
+      );
+    }
   }
 
   void _onAnswerSelected(
@@ -457,8 +468,10 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
                             );
                           }
 
-                          if (stepType == SectionStepType.education ||
-                              quesType == SectionQuestionType.number) {
+                          if (!_showEducationView && (
+                              stepType == SectionStepType.education ||
+                                  quesType == SectionQuestionType.number
+                          )) {
                             final ctaText = currentSection.section.payload?.ctaText ?? "";
                             String btnCtaTitle = L10n.of(context)
                                 .translate('common_cta_continue');

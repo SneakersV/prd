@@ -249,7 +249,19 @@ class SectionOnboardingQAContent extends StatelessWidget {
         if (!showEducationView) {
           return _renderEducationContent(context, data);
         }
-        return const EducationView();
+
+        final length = state.sectionOnboardings.length;
+        final typeIdx = length - 3;
+        final locationIdx = length - 2;
+        final type = state.sectionOnboardings[typeIdx].answerFilled?.answer;
+        final location = state.sectionOnboardings[locationIdx].answerFilled?.answer;
+        if (type != null && location != null) {
+          return EducationView(
+            type: type,
+            location: location,
+          );
+        }
+        return const SizedBox();
       } else if (stepType == SectionStepType.Final) {
         return SectionOnboardingCalculateResult();
       } else {

@@ -8,7 +8,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class EducationView extends StatefulWidget {
   const EducationView({
     super.key,
+    required this.type,
+    required this.location,
   });
+
+  final String type;
+  final String location;
 
   @override
   State<EducationView> createState() => _EducationViewState();
@@ -39,8 +44,8 @@ class _EducationViewState extends State<EducationView>
   Widget build(BuildContext context) {
     return BlocProvider<GetEducationBloc>(
       create: (_) => GetEducationBloc.instance()..add(GetEducationOnboardingStarted(
-        type: "CHUNG_CU",
-        location: "HCMC",
+        type: widget.type,
+        location: widget.location,
       )),
       child: BlocConsumer<GetEducationBloc, GetEducationState>(
         listener: (_, state) {
@@ -70,6 +75,7 @@ class _EducationViewState extends State<EducationView>
                   title: data.title,
                   description: data.message,
                   url: data.url,
+                  isLast: data.order == state.onboardingEducations.last.order,
                 );
               }).toList(),
             ),
