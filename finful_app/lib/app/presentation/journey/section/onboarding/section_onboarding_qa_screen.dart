@@ -182,11 +182,6 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
   }
 
   void _processSubmitCalculate() {
-    showSnackBarMessage(
-      type: ShowMessageSnackBarType.info,
-      title: 'common_section_completed_title',
-      message: 'common_section_completed_message',
-    );
     BlocManager().event<OnboardingBloc>(
       BlocConstants.sectionOnboarding,
       OnboardingCalculateStarted(),

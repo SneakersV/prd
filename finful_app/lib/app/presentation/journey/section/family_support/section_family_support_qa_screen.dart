@@ -167,11 +167,6 @@ class _SectionFamilySupportQAScreenState extends State<SectionFamilySupportQAScr
   }
 
   void _processSubmitAnswers() {
-    showSnackBarMessage(
-      type: ShowMessageSnackBarType.info,
-      title: 'common_section_completed_title',
-      message: 'common_section_completed_message',
-    );
     BlocManager().event<FamilySupportBloc>(
       BlocConstants.sectionFamilySupport,
       FamilySupportSubmitAnswerStarted(

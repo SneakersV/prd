@@ -159,12 +159,6 @@ class _SectionSpendingQAScreenState extends State<SectionSpendingQAScreen>
   }
 
   void _processSubmitCalculate() {
-    showSnackBarMessage(
-      type: ShowMessageSnackBarType.info,
-      title: 'common_section_completed_title',
-      message: 'common_section_completed_message',
-    );
-
     BlocManager().event<SpendingBloc>(
       BlocConstants.sectionSpending,
       SpendingCalculateStarted(

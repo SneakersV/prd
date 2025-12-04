@@ -126,11 +126,6 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
   }
 
   void _processSubmitCalculate() {
-    showSnackBarMessage(
-      type: ShowMessageSnackBarType.info,
-      title: 'common_section_completed_title',
-      message: 'common_section_completed_message',
-    );
     BlocManager().event<AssumptionsBloc>(
       BlocConstants.sectionAssumptions,
       AssumptionsCalculateStarted(

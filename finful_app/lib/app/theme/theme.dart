@@ -8,7 +8,7 @@ import 'dimens.dart';
 export 'colors.dart';
 export 'dimens.dart';
 
-const _kFontFamily = 'Gilroy';
+const _kFontFamily = 'Inter';
 
 class FinfulTheme {
   static TextTheme lightTextTheme = TextTheme(
