@@ -80,6 +80,10 @@ class _SectionSpendingQAScreenState extends State<SectionSpendingQAScreen>
     _inputController.clear();
   }
 
+  void _updateTextInputController(String value) {
+    _inputController.text = value;
+  }
+
   void _processAfterFilledAnswer(SpendingFillAnswerSuccess state) {
     final nextStep = state.sectionSpendings.length + 1;
     BlocManager().event<SpendingBloc>(
@@ -101,20 +105,17 @@ class _SectionSpendingQAScreenState extends State<SectionSpendingQAScreen>
       SectionQuestionType quesType,
       String? unit) {
     final answerStr = _inputController.text.trim();
-    if (questionKey.isNullOrEmpty) {
-      return;
-    }
-    if (quesType != SectionQuestionType.number) {
-      return;
-    }
-    if (answerStr.isNullOrEmpty) {
-      return;
-    }
+    if (questionKey.isNullOrEmpty) return;
+    if (quesType != SectionQuestionType.number) return;
+
+    final inputValid = _formKey.currentState!.validate();
+    if (!inputValid) return;
 
     _handleUnFocus();
 
-    final finalAnswer = answerStr.toMillionByUnit(unit);
-    if (finalAnswer == -1) {
+    final isBillion = unit?.isBillion ?? false;
+    final finalAnswer = isBillion ? double.tryParse(answerStr) : int.tryParse(answerStr);
+    if (finalAnswer == -1 || finalAnswer == null) {
       showSnackBarMessage(
         type: ShowMessageSnackBarType.warning,
         title: 'common_section_input_currency_invalid_title',
@@ -198,8 +199,8 @@ class _SectionSpendingQAScreenState extends State<SectionSpendingQAScreen>
         currentSection.section.payload?.questionType);
     if (quesType == SectionQuestionType.number) {
       final currentAnswer = currentSection.answerFilled?.answer;
-      if (currentAnswer is String) {
-        _inputController.text = currentAnswer;
+      if (currentAnswer != null) {
+        _updateTextInputController(currentAnswer.toString());
         _requestFocus();
       }
     } else {

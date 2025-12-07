@@ -31,7 +31,6 @@ class SectionOptionWrapperItem extends StatelessWidget {
   }
 }
 
-
 class SectionOptionsWrapper extends StatelessWidget {
   const SectionOptionsWrapper({
     super.key,
@@ -48,9 +47,9 @@ class SectionOptionsWrapper extends StatelessWidget {
       options: LiveOptions(
         delay: Duration.zero,
         // Show each item through
-        showItemInterval: Duration(milliseconds: 200),
+        showItemInterval: Duration(milliseconds: 100),
         // Animation duration
-        showItemDuration: Duration(milliseconds: 200),
+        showItemDuration: Duration(milliseconds: 100),
         visibleFraction: 0.05,
         reAnimateOnVisibility: false,
       ),

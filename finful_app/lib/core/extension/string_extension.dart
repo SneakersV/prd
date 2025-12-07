@@ -2,6 +2,8 @@ import '../regex/regex.dart';
 import 'package:tiengviet/tiengviet.dart';
 
 extension StringExtension on String {
+  // Chuẩn hóa cả dấu chấm và dấu phẩy thành định dạng parse được
+  String get _normalized => replaceAll(',', '.'); // "4,5" → "4.5"
 
   /// Từ "tỷ" (vd: "4.5", "10") → số nguyên triệu
   /// "4.5"   → 4500
@@ -9,32 +11,33 @@ extension StringExtension on String {
   /// "1.99"  → 1990
   /// "80"    → 80 (dưới 100 → hiểu là triệu, giữ nguyên)
   int get fromBillionsToMillionsInt {
-    final cleaned = replaceAll(',', ''); // bỏ dấu phẩy nếu có
+    final cleaned = _normalized;
     final value = double.tryParse(cleaned) ?? 0.0;
     final result = value >= 100 ? value * 1000 : value;
-    return result.floor(); // làm tròn xuống → int
+    return result.floor();
   }
 
   /// Từ triệu → tỷ
   int get fromMillionsToBillionsInt {
-    final cleaned = replaceAll(',', '');
-    final value = double.tryParse(cleaned) ?? 0.0;
+    final value = double.tryParse(_normalized) ?? 0.0;
     return (value / 1000).floor();
   }
 
   bool get isBillion {
-    return this == "tỷ VNĐ";
+    return toLowerCase().contains("tỷ");
   }
 
   int toMillionByUnit(String? unit) {
-    int formattedAnswerStr = -1;
+    final normalizedText = _normalized;
+    final value = double.tryParse(normalizedText);
+    if (value == null) return -1;
+
     final fUnit = unit ?? "";
     if (fUnit.isBillion) {
-      formattedAnswerStr = fromBillionsToMillionsInt;
+      return (value * 1000).floor(); // luôn nhân 1000 nếu là tỷ
     } else {
-      formattedAnswerStr = int.tryParse(this) ?? -1;
+      return value.floor(); // là triệu → giữ nguyên
     }
-    return formattedAnswerStr;
   }
 
   String uriPath() {

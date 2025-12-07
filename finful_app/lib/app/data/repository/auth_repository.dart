@@ -1,4 +1,3 @@
-
 import 'package:finful_app/app/data/model/response/logout_response.dart';
 import 'package:finful_app/app/data/model/response/signin_response.dart';
 import 'package:finful_app/app/data/model/response/signup_response.dart';

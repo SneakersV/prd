@@ -53,6 +53,7 @@
   "signup_firstname_empty": "Họ không đuợc để trống",
   "signup_lastname_empty": "Tên không đuợc để trống",
   "signup_email_empty": "Email không đuợc để trống",
+  "section_number_input_empty": "Thông tin này không đuợc để trống",
   "signup_email_invalid": "Email không hợp lệ",
   "signup_email_hint": "Nhập email",
   "signup_password_hint": "Nhập mật khẩu",

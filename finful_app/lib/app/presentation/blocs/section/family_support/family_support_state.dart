@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:finful_app/app/domain/model/section_model.dart';
 

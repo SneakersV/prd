@@ -29,12 +29,17 @@ class SectionFamilySupportQaSubmitResult extends StatelessWidget {
           ),
         ),
         const SizedBox(height: Dimens.p_60),
-        Text(
-          message,
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-            fontWeight: FontWeight.w400,
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: Dimens.p_40,
           ),
-          textAlign: TextAlign.center,
+          child: Text(
+            message,
+            style: Theme.of(context).textTheme.displaySmall!.copyWith(
+              fontWeight: FontWeight.w400,
+            ),
+            textAlign: TextAlign.center,
+          ),
         ),
       ],
     );

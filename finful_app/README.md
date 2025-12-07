@@ -1,16 +1,16 @@
 # finful_app
 
-A new Flutter project.
+Android build
+1. them file key.properties trong finful_app/android/key.properties
 
-## Getting Started
+trong file key.properties them:
 
-This project is a starting point for a Flutter application.
+storePassword=123456finful
+keyPassword=123456finful
+keyAlias=finfulreleasekey
+storeFile=../../Certificates/release-keystore.jks
 
-A few resources to get you started if this is your first Flutter project:
+2. sua build tu debug -> release
+signingConfig = signingConfigs.getByName("release")
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

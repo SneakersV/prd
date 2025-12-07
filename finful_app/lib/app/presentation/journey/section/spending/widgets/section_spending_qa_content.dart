@@ -11,6 +11,7 @@ import 'package:finful_app/app/presentation/widgets/section/section_option_card.
 import 'package:finful_app/app/presentation/widgets/section/section_options_wrapper.dart';
 import 'package:finful_app/app/presentation/widgets/section/section_qa_content_loading.dart';
 import 'package:finful_app/app/theme/theme.dart';
+import 'package:finful_app/app/utils/utils.dart';
 import 'package:finful_app/common/constants/dimensions.dart';
 import 'package:finful_app/core/bloc/base/bloc_manager.dart';
 import 'package:finful_app/core/extension/extension.dart';
@@ -48,10 +49,19 @@ class SectionSpendingQAContent extends StatelessWidget {
     );
   }
 
+  String? _onNumberInputValidator(BuildContext context, String? value) {
+    if (value.isNullOrEmpty) {
+      return L10n.of(context).translate('section_number_input_empty');
+    }
+
+    return null;
+  }
+
   Widget _renderInputContent(BuildContext context, SectionModel data) {
     final questionTxt = data.section.payload?.text ?? "";
     final unit = data.section.payload?.unit ?? "";
     String currencyValueTxt = "${inputController.text} $unit";
+    final isBillion = unit.isBillion;
 
     return Container(
       color: Colors.transparent,
@@ -61,6 +71,7 @@ class SectionSpendingQAContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (isBillion)
           Text(
             L10n.of(context)
                 .translate('common_section_input_number_formatted_warning'),
@@ -99,6 +110,8 @@ class SectionSpendingQAContent extends StatelessWidget {
                 ),
               ),
             ),
+            inputFormatter: sectionNumberInputFormatters,
+            validator: (value) => _onNumberInputValidator(context, value),
             textInputAction: TextInputAction.done,
           ),
           const SizedBox(height: Dimens.p_4),
