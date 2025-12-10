@@ -457,6 +457,8 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
                                           onPressed: () {
                                             if (stepType == SectionStepType.question) {
                                               _onAnswerSelected(questionKey, quesType, unit);
+                                            } else if (stepType == SectionStepType.Final) {
+                                              _processSubmitCalculate();
                                             }
                                           },
                                         ),

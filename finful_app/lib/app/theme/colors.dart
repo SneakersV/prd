@@ -126,4 +126,7 @@ class FinfulColor {
   static final Color tabBarElevationColor = white.withValues(alpha: 0.3);
   static const Color tabBarActiveColor = white;
   static final Color tabBarInactiveColor = white.withValues(alpha: 0.5);
+
+  // dialog
+  static const Color dialogBackgroundColor = Color(0xFF333437);
 }

@@ -183,5 +183,9 @@
   "setting_tile_general_header_term": "Điều khoản sử dụng",
   "setting_tile_account_header_label": "Tài khoản",
   "setting_tile_account_header_logout": "Đăng xuất",
-  "setting_tile_account_header_deleteAccount": "Xoá tài khoản"
+  "setting_tile_account_header_deleteAccount": "Xoá tài khoản",
+  "common_dialog_delete_account_title": "NHẮC NHỞ",
+  "common_dialog_delete_account_content": "Hành động nãy sẽ xoá TOÀN BỘ dữ liệu trong tài khoản, bao gồm những thông tin bạn đã cung cấp và kế hoạch đã được tạo",
+  "common_dialog_delete_account_left_btn": "QUAY LẠI",
+  "common_dialog_delete_account_right_btn": "XÁC NHẬN"
 }

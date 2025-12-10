@@ -21,9 +21,9 @@ class UserPlanModel extends Equatable {
 
 class UserExtModel extends Equatable {
   final UserPlanModel? plan;
-  final String? amountSaved;
-  final String? housePrice;
-  final String? loanAmount;
+  final double? amountSaved;
+  final double? housePrice;
+  final double? loanAmount;
 
   const UserExtModel({
     this.plan,

@@ -124,11 +124,7 @@ class SessionBloc extends BaseBloc<SessionEvent, SessionState>
         emit(SessionSignOutFailure(state));
       }
     } catch (err) {
-      showSnackBarMessage(
-        type: ShowMessageSnackBarType.error,
-        title: 'common_error_logout_failed',
-        message: 'common_error_logout_failed_message',
-      );
+      handleError(err);
       emit(SessionSignOutFailure(state));
     } finally {
       hideAppLoading();

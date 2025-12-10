@@ -49,9 +49,9 @@ class UserExtInfoPlanResponse {
 class UserExtInfoResponse {
   final UserExtInfoUserResponse? user;
   final UserExtInfoPlanResponse? plan;
-  final String? amountSaved;
-  final String? housePrice;
-  final String? loanAmount;
+  final double? amountSaved;
+  final double? housePrice;
+  final double? loanAmount;
 
   UserExtInfoResponse({
     this.user,
@@ -70,9 +70,9 @@ class UserExtInfoResponse {
     return UserExtInfoResponse(
       user: user,
       plan: plan,
-      amountSaved: json['amountSaved'] ?? kString,
-      housePrice: json['housePrice'] ?? kString,
-      loanAmount: json['loanAmount'] ?? kString,
+      amountSaved: json['amountSaved'] ?? kDouble,
+      housePrice: json['housePrice'] ?? kDouble,
+      loanAmount: json['loanAmount'] ?? kDouble,
     );
   }
 }

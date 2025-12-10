@@ -354,6 +354,8 @@ class _SectionFamilySupportQAScreenState extends State<SectionFamilySupportQAScr
                                         _educationContinuePressed(state);
                                       } else if (stepType == SectionStepType.question) {
                                         _onAnswerSelected(questionKey, quesType, unit);
+                                      } else if (stepType == SectionStepType.Final) {
+                                        _processSubmitAnswers();
                                       }
                                     },
                                   ),

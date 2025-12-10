@@ -33,12 +33,20 @@ mixin ShowMessageBlocMixin {
         message = error.message;
         break;
       case UnauthorisedException: //401
+        final errorCast = error as UnauthorisedException;
+        final errorMap = errorCast.error as Map<String, dynamic>?;
+        final finalMessage = errorMap != null
+            ? errorMap['error'] : 'common_error_unauthorized_message';
         title = 'common_error_unauthorized';
-        message = 'common_error_unauthorized_message';
+        message = finalMessage;
         break;
       case NotFoundException: //404
+        final errorCast = error as NotFoundException;
+        final errorMap = errorCast.error as Map<String, dynamic>?;
+        final finalMessage = errorMap != null
+            ? errorMap['error'] : 'common_error_not_found_message';
         title = 'common_error_not_found';
-        message = 'common_error_not_found_message';
+        message = finalMessage;
         break;
       case ServerErrorException: // 500
         final errorCast = error as ServerErrorException;

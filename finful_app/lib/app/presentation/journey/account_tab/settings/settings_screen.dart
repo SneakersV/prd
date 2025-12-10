@@ -10,6 +10,7 @@ import 'package:finful_app/app/theme/colors.dart';
 import 'package:finful_app/app/theme/dimens.dart';
 import 'package:finful_app/common/constants/dimensions.dart';
 import 'package:finful_app/common/widgets/app_bar/finful_app_bar.dart';
+import 'package:finful_app/common/widgets/app_dialog/finful_dialog.dart';
 import 'package:finful_app/common/widgets/app_icon/app_icon.dart';
 import 'package:finful_app/core/bloc/base/bloc_manager.dart';
 import 'package:finful_app/core/extension/extension.dart';
@@ -198,9 +199,45 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   void _onDeleteAccountPressed() {
-    BlocManager().event<AccountTabBloc>(
-      BlocConstants.accountTabBar,
-      AccountTabDeleteAccountSubmitted(),
+    FinfulDialog.show(
+      context,
+      title: L10n.of(context)
+          .translate('common_dialog_delete_account_title'),
+      content: L10n.of(context)
+          .translate('common_dialog_delete_account_content'),
+      backgroundColor: FinfulColor.dialogBackgroundColor,
+      titleStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+        fontSize: Dimens.p_15,
+        height: Dimens.p_14 / Dimens.p_15,
+        fontWeight: FontWeight.w500,
+      ),
+      contentStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+        fontWeight: FontWeight.w300,
+      ),
+      actions: [
+        FinfulDialogAction(
+          label: L10n.of(context)
+              .translate('common_dialog_delete_account_left_btn'),
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+            color: FinfulColor.brandPrimary,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        FinfulDialogAction(
+          label: L10n.of(context)
+              .translate('common_dialog_delete_account_right_btn'),
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+            color: FinfulColor.brandPrimary,
+            fontWeight: FontWeight.w400,
+          ),
+          onPressed: () {
+            BlocManager().event<AccountTabBloc>(
+              BlocConstants.accountTabBar,
+              AccountTabDeleteAccountSubmitted(),
+            );
+          },
+        ),
+      ],
     );
   }
 

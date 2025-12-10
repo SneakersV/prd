@@ -32,7 +32,7 @@ class UserRemoteDatasourceImpl extends BaseRemote implements UserRemoteDatasourc
   Future<DeleteAccountResponse> postDeleteAccount() async {
     final url = '$_host/user/delete';
     final json =
-    await post(url, ApiHeaderType.withToken);
+    await delete(url, ApiHeaderType.withToken);
     return DeleteAccountResponse.fromJson(json);
   }
 }

@@ -8,7 +8,7 @@ const _kActionButtonHeight = 44.0;
 const _kDropdownPosition = 50.0;
 const _kShowColumnIfActionGreaterThanValue = 2;
 const _kDefaultBorderRadius = 12.0;
-const _kDefaultBackgroundColor = Color(0xCCF2F2F2);
+const _kDefaultBackgroundColor = Color(0xFF333437);
 const _kDefaultBlurValue = 20.0;
 const _kMaxActionDisplay = 4;
 const _kDefaultAction = FinfulDialogAction(label: 'OK');
@@ -31,8 +31,8 @@ class FinfulDialogAction {
   });
 }
 
-class XHRDialog extends StatelessWidget {
-  const XHRDialog({
+class FinfulDialog extends StatelessWidget {
+  const FinfulDialog({
     super.key,
     this.title = '',
     this.content = '',
@@ -106,7 +106,7 @@ class XHRDialog extends StatelessWidget {
       barrierDismissible: barrierDismissible,
       context: context,
       pageBuilder: (context, animation1, animation2) {
-        return XHRDialog(
+        return FinfulDialog(
           title: title,
           content: content,
           margin: margin,
@@ -178,7 +178,7 @@ class XHRDialog extends StatelessWidget {
                       ),
                       if (content.isNotEmpty) ...[
                         const SizedBox(
-                          height: 2.0,
+                          height: 12.0,
                         ),
                         Text(
                           content,

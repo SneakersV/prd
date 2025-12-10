@@ -67,8 +67,10 @@ class AppRoutes {
               BlocProvider<SignInBloc>(
                 create: (_) => SignInBloc.instance(),
               ),
-              BlocProvider<CreatePlanBloc>.value(
-                value: createPlanBloc!,
+              if (createPlanBloc != null)
+                BlocProvider<CreatePlanBloc>.value(value: createPlanBloc)
+              else BlocProvider<CreatePlanBloc>(
+                create: (_) => CreatePlanBloc.instance(),
               ),
             ],
             child: const SignInScreen()

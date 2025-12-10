@@ -383,6 +383,8 @@ class _SectionSpendingQAScreenState extends State<SectionSpendingQAScreen>
                                         _educationContinuePressed(state);
                                       } else if (stepType == SectionStepType.question) {
                                         _onAnswerSelected(questionKey, quesType, unit);
+                                      } else if (stepType == SectionStepType.Final) {
+                                        _processSubmitCalculate();
                                       }
                                     },
                                   ),

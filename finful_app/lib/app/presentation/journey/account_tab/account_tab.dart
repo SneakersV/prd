@@ -207,30 +207,39 @@ class _AccountTabState extends State<AccountTab>
                       ),
                       child: BlocBuilder<AccountTabBloc, AccountTabState>(
                           builder: (_, state) {
-                            final timeBuyHouse = state.loggedInUserExtraInfo?.plan?.time ?? "";
+                            final timeBuyHouse = state.loggedInUserExtraInfo?.plan?.time;
+                            String timeBuyHouseTxt = "";
+                            if (timeBuyHouse != null && timeBuyHouse > 0) {
+                              timeBuyHouseTxt = timeBuyHouse.toString();
+                            }
                             final bdsType = state.loggedInUserExtraInfo?.plan?.type ?? "";
                             const chungcu = "Chung cư";
                             const nhadat = "Nhà đất";
-                            const datnen = "Đất nền";
                             String bdsTypeTxt = bdsType;
                             if (bdsType == "CHUNG_CU") {
                               bdsTypeTxt = chungcu;
                             } else if (bdsType == "NHA_DAT") {
                               bdsTypeTxt = nhadat;
-                            }  else if (bdsType == "DAT_NEN") {
-                              bdsTypeTxt = datnen;
                             }
                             final bdsLocation = state.loggedInUserExtraInfo?.plan?.location ?? "";
-                            final housePrice = state.loggedInUserExtraInfo?.housePrice ?? "";
-                            final amountSaved = state.loggedInUserExtraInfo?.amountSaved ?? "";
-                            final loanAmount = state.loggedInUserExtraInfo?.loanAmount ?? "";
+                            const hanoi = "Hà Nội";
+                            const hcm = "Hồ Chí Minh";
+                            String bdsLocationTxt = bdsLocation;
+                            if (bdsLocation == "HANOI") {
+                              bdsLocationTxt = hanoi;
+                            } else if (bdsLocation == "HCMC") {
+                              bdsLocationTxt = hcm;
+                            }
+                            final housePrice = state.loggedInUserExtraInfo?.housePrice.tildeVnd ?? "";
+                            final amountSaved = state.loggedInUserExtraInfo?.amountSaved.tildeVnd ?? "";
+                            final loanAmount = state.loggedInUserExtraInfo?.loanAmount.tildeVnd ?? "";
 
                             return Column(
                               children: [
                                 AccountTabSummaryTile(
                                   label: L10n.of(context)
                                       .translate('account_tab_summary_title1'),
-                                  value: "$timeBuyHouse",
+                                  value: timeBuyHouseTxt,
                                 ),
                                 AccountTabDivider(),
                                 AccountTabSummaryTile(
@@ -242,7 +251,7 @@ class _AccountTabState extends State<AccountTab>
                                 AccountTabSummaryTile(
                                   label: L10n.of(context)
                                       .translate('account_tab_summary_title3'),
-                                  value: bdsLocation,
+                                  value: bdsLocationTxt,
                                 ),
                                 AccountTabDivider(),
                                 AccountTabSummaryTile(

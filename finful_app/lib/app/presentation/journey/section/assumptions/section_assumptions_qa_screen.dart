@@ -617,6 +617,8 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
                               onPressed: () {
                                 if (stepType == SectionStepType.question) {
                                   _onAnswerSelected(questionKey, quesType);
+                                }  else if (stepType == SectionStepType.Final) {
+                                  _processSubmitCalculate();
                                 }
                               },
                             ),
