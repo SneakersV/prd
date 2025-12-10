@@ -311,7 +311,7 @@ class _SectionFamilySupportQAScreenState extends State<SectionFamilySupportQAScr
                       ),
                     ),
                     Positioned(
-                      bottom: Dimens.p_12 + context.queryPaddingBottom,
+                      bottom: Dimens.p_0,
                       left: Dimens.p_0,
                       right: Dimens.p_0,
                       child: BlocBuilder<FamilySupportBloc, FamilySupportState>(
@@ -337,7 +337,8 @@ class _SectionFamilySupportQAScreenState extends State<SectionFamilySupportQAScr
                           }
 
                           if (currentStep == totalStep) {
-                            return Padding(
+                            return Container(
+                              color: Theme.of(context).scaffoldBackgroundColor,
                               padding: EdgeInsets.symmetric(
                                 horizontal: FinfulDimens.md,
                               ),
@@ -357,6 +358,9 @@ class _SectionFamilySupportQAScreenState extends State<SectionFamilySupportQAScr
                                     },
                                   ),
                                   const SizedBox(height: Dimens.p_12),
+                                  SizedBox(
+                                    height: Dimens.p_12 + context.queryPaddingBottom,
+                                  ),
                                 ],
                               ),
                             );
@@ -370,7 +374,8 @@ class _SectionFamilySupportQAScreenState extends State<SectionFamilySupportQAScr
                             if (stepType == SectionStepType.education && ctaText.isNotEmpty) {
                               btnCtaTitle = ctaText;
                             }
-                            return Padding(
+                            return Container(
+                              color: Theme.of(context).scaffoldBackgroundColor,
                               padding: EdgeInsets.symmetric(
                                 horizontal: FinfulDimens.md,
                               ),
@@ -388,6 +393,9 @@ class _SectionFamilySupportQAScreenState extends State<SectionFamilySupportQAScr
                                     },
                                   ),
                                   const SizedBox(height: Dimens.p_12),
+                                  SizedBox(
+                                    height: Dimens.p_12 + context.queryPaddingBottom,
+                                  ),
                                 ],
                               ),
                             );

@@ -387,7 +387,7 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
                       ),
                     ),
                     Positioned(
-                      bottom: Dimens.p_12 + context.queryPaddingBottom,
+                      bottom: Dimens.p_0,
                       left: Dimens.p_0,
                       right: Dimens.p_0,
                       child: BlocBuilder<OnboardingBloc, OnboardingState>(
@@ -416,7 +416,8 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
                                   .translate('common_cta_discovery_btn');
                               String backDashboardTxt = L10n.of(context)
                                   .translate('common_cta_back_dashboard_btn');
-                              return Padding(
+                              return Container(
+                                color: Theme.of(context).scaffoldBackgroundColor,
                                 padding: EdgeInsets.symmetric(
                                   horizontal: FinfulDimens.md,
                                 ),
@@ -431,6 +432,9 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
                                       },
                                     ),
                                     const SizedBox(height: Dimens.p_18),
+                                    SizedBox(
+                                      height: Dimens.p_12 + context.queryPaddingBottom,
+                                    ),
                                   ],
                                 ),
                               );
@@ -440,7 +444,8 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
                           }
 
                           if (currentStep == totalStep) {
-                            return Padding(
+                            return Container(
+                              color: Theme.of(context).scaffoldBackgroundColor,
                               padding: EdgeInsets.symmetric(
                                 horizontal: FinfulDimens.md,
                               ),
@@ -460,6 +465,9 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
                                     },
                                   ),
                                   const SizedBox(height: Dimens.p_12),
+                                  SizedBox(
+                                    height: Dimens.p_12 + context.queryPaddingBottom,
+                                  ),
                                 ],
                               ),
                             );
@@ -475,7 +483,8 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
                             if (stepType == SectionStepType.education && ctaText.isNotEmpty) {
                               btnCtaTitle = ctaText;
                             }
-                            return Padding(
+                            return Container(
+                              color: Theme.of(context).scaffoldBackgroundColor,
                               padding: EdgeInsets.symmetric(
                                 horizontal: FinfulDimens.md,
                               ),
@@ -493,6 +502,9 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
                                     },
                                   ),
                                   const SizedBox(height: Dimens.p_12),
+                                  SizedBox(
+                                    height: Dimens.p_12 + context.queryPaddingBottom,
+                                  ),
                                 ],
                               ),
                             );

@@ -566,7 +566,7 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
                 ),
               ),
               Positioned(
-                bottom: Dimens.p_12 + context.queryPaddingBottom,
+                bottom: Dimens.p_0,
                 left: Dimens.p_0,
                 right: Dimens.p_0,
                 child: BlocBuilder<AssumptionsBloc, AssumptionsState>(
@@ -594,7 +594,8 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
                     }
 
                     if (currentStep == totalStep) {
-                      return Padding(
+                      return Container(
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         padding: EdgeInsets.symmetric(
                           horizontal: FinfulDimens.md,
                         ),
@@ -612,6 +613,9 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
                               },
                             ),
                             const SizedBox(height: Dimens.p_12),
+                            SizedBox(
+                              height: Dimens.p_12 + context.queryPaddingBottom,
+                            ),
                           ],
                         ),
                       );
@@ -619,7 +623,8 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
 
                     if (quesType == SectionQuestionType.slider ||
                         quesType == SectionQuestionType.radio) {
-                      return Padding(
+                      return Container(
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         padding: EdgeInsets.symmetric(
                           horizontal: FinfulDimens.md,
                         ),
@@ -636,6 +641,9 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
                               },
                             ),
                             const SizedBox(height: Dimens.p_12),
+                            SizedBox(
+                              height: Dimens.p_12 + context.queryPaddingBottom,
+                            ),
                           ],
                         ),
                       );

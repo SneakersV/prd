@@ -5,7 +5,6 @@ import 'package:finful_app/app/presentation/blocs/section/assumptions/assumption
 import 'package:finful_app/app/presentation/widgets/app_image/FinfulImage.dart';
 import 'package:finful_app/app/theme/colors.dart';
 import 'package:finful_app/common/constants/dimensions.dart';
-import 'package:finful_app/core/extension/context_extension.dart';
 import 'package:finful_app/core/extension/extension.dart';
 import 'package:finful_app/core/localization/l10n.dart';
 import 'package:flutter/material.dart';
