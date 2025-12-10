@@ -48,7 +48,6 @@ dependencies:
   tiengviet: ^1.0.0
   flutter_svg: ^2.2.1
   lottie: ^3.3.2
-  rive: ^0.13.20
   visibility_detector: ^0.4.0+2
   dotted_line: ^3.2.3
   sliver_tools: ^0.2.12
@@ -90,7 +89,6 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/lotties/
-    - assets/rives/
 
   fonts:
      - family: Inter
