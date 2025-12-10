@@ -4,17 +4,19 @@ import 'package:finful_app/app/domain/interactor/section_interactor.dart';
 import 'package:finful_app/app/domain/model/extension/section_ext.dart';
 import 'package:finful_app/app/domain/model/section_model.dart';
 import 'package:finful_app/app/presentation/blocs/mixins/loader_bloc_mixin.dart';
+import 'package:finful_app/app/presentation/blocs/mixins/session_bloc_mixin.dart';
 import 'package:finful_app/app/presentation/blocs/mixins/show_message_mixin.dart';
 import 'package:finful_app/app/presentation/blocs/section/family_support/family_support_event.dart';
 import 'package:finful_app/app/presentation/blocs/section/family_support/family_support_state.dart';
 import 'package:finful_app/core/bloc/base/base_bloc.dart';
 import 'package:finful_app/core/bloc/base/bloc_manager.dart';
+import 'package:finful_app/core/exception/api_exception.dart';
 import 'package:finful_app/core/extension/string_extension.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FamilySupportBloc extends BaseBloc<FamilySupportEvent, FamilySupportState>
-    with LoaderBlocMixin, ShowMessageBlocMixin {
+    with LoaderBlocMixin, ShowMessageBlocMixin, SessionBlocMixin {
   late final SectionInteractor _sectionInteractor;
   late final PlanInteractor _planInteractor;
 
@@ -141,6 +143,9 @@ class FamilySupportBloc extends BaseBloc<FamilySupportEvent, FamilySupportState>
         state: state,
         failedType: FamilySupportSubmitAnswerFailureType.api,
       ));
+      if (err is UnauthorisedException) {
+        forceUserToLogin401();
+      }
     }
   }
 }

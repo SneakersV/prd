@@ -38,6 +38,7 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
         ShowMessageBlocMixin, AssumptionsBlocMixin {
   int _currentValue = 0; // for slider
   SectionPayloadOptionResponse? _currentOption; // for radio
+  bool _hasUserChanged = false;
 
   @override
   void didMountWidget() {
@@ -139,15 +140,21 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
   }
 
   void _onSliderValueChanged(int newValue) {
-    setState(() {
-      _currentValue = newValue;
-    });
+    if (!_hasUserChanged) {
+      _hasUserChanged = true;
+    }
+    _currentValue = newValue;
+
+    setState(() {});
   }
 
   void _onRadioValueChanged(SectionPayloadOptionResponse newValue) {
-    setState(() {
-      _currentOption = newValue;
-    });
+    if (!_hasUserChanged) {
+      _hasUserChanged = true;
+    }
+    _currentOption = newValue;
+
+    setState(() {});
   }
 
   void _processGetNextStepSuccess(AssumptionsGetNextStepSuccess state) {
@@ -555,6 +562,7 @@ class _SectionAssumptionsQAScreenState extends State<SectionAssumptionsQAScreen>
                       ),
                       sliver: SliverToBoxAdapter(
                         child: SectionAssumptionsQAContent(
+                            hasUserChanged: _hasUserChanged,
                             sliderValueSelected: _currentValue,
                             onSliderValueChanged: _onSliderValueChanged,
                             radioValueSelected: _currentOption,

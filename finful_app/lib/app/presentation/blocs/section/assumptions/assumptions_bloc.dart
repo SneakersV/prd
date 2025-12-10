@@ -4,9 +4,11 @@ import 'package:finful_app/app/domain/interactor/section_interactor.dart';
 import 'package:finful_app/app/domain/model/extension/extension.dart';
 import 'package:finful_app/app/domain/model/section_model.dart';
 import 'package:finful_app/app/presentation/blocs/mixins/loader_bloc_mixin.dart';
+import 'package:finful_app/app/presentation/blocs/mixins/session_bloc_mixin.dart';
 import 'package:finful_app/app/presentation/blocs/mixins/show_message_mixin.dart';
 import 'package:finful_app/core/bloc/base/base_bloc.dart';
 import 'package:finful_app/core/bloc/base/bloc_manager.dart';
+import 'package:finful_app/core/exception/api_exception.dart';
 import 'package:finful_app/core/extension/string_extension.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +17,7 @@ import 'assumptions_event.dart';
 import 'assumptions_state.dart';
 
 class AssumptionsBloc extends BaseBloc<AssumptionsEvent, AssumptionsState>
-    with LoaderBlocMixin, ShowMessageBlocMixin {
+    with LoaderBlocMixin, ShowMessageBlocMixin, SessionBlocMixin {
   late final SectionInteractor _sectionInteractor;
   late final PlanInteractor _planInteractor;
 
@@ -148,6 +150,9 @@ class AssumptionsBloc extends BaseBloc<AssumptionsEvent, AssumptionsState>
         state: state,
         failedType: AssumptionsCalculateFailureType.api,
       ));
+      if (err is UnauthorisedException) {
+        forceUserToLogin401();
+      }
     }
   }
 }

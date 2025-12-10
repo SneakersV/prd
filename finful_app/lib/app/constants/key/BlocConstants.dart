@@ -38,6 +38,8 @@ class BlocConstants {
 class BlocBroadcastEventConstants {
   // authentication
   static const String justLoggedIn = 'broadcast_just_logged_in';
+  static const String justDeleteAccountSucceed =
+      'broadcast_just_delete_account_succeed';
 
   // section
   static const String justGetSectionProgressRequired =

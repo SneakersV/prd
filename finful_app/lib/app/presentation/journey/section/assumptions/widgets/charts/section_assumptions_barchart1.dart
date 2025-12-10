@@ -9,10 +9,10 @@ import 'package:flutter/material.dart';
 class SectionAssumptionsBarchart1 extends StatefulWidget {
   const SectionAssumptionsBarchart1({
     super.key,
-    required this.sliderValueSelected,
+    required this.chartDefaultValue,
   });
 
-  final int sliderValueSelected;
+  final int chartDefaultValue;
 
   @override
   State<SectionAssumptionsBarchart1> createState() => _SectionAssumptionsBarchart1State();
@@ -35,13 +35,13 @@ class _SectionAssumptionsBarchart1State extends State<SectionAssumptionsBarchart
   @override
   void didUpdateWidget(SectionAssumptionsBarchart1 oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.sliderValueSelected != widget.sliderValueSelected) {
+    if (oldWidget.chartDefaultValue != widget.chartDefaultValue) {
       _calculateData();
     }
   }
 
   void _calculateData() {
-    final double rate = widget.sliderValueSelected / 100.0;
+    final double rate = widget.chartDefaultValue / 100.0;
 
     const double salaryThisYear = 1.2;     // 1.2 tỷ
     const double borrowThisYear = 1.8;     // 1.8 tỷ

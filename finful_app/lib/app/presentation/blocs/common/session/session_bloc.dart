@@ -108,11 +108,13 @@ class SessionBloc extends BaseBloc<SessionEvent, SessionState>
       SessionUserLogOutSubmitted event,
       Emitter<SessionState> emit,
       ) async {
+    showAppLoading();
+    emit(SessionSignOutInProgress(state));
     try {
-      final isSuccess = await _authInteractor.submitLogout();
-      if (isSuccess) {
-        await _sessionInteractor.clearSessionDataAtLocal();
+      final success = await _authInteractor.submitLogout();
+      if (success) {
         emit(SessionSignOutSuccess());
+        forceUserToLoginAfterLogoutOrDeleteAccountSucceed();
       } else {
         showSnackBarMessage(
           type: ShowMessageSnackBarType.error,
@@ -128,6 +130,8 @@ class SessionBloc extends BaseBloc<SessionEvent, SessionState>
         message: 'common_error_logout_failed_message',
       );
       emit(SessionSignOutFailure(state));
+    } finally {
+      hideAppLoading();
     }
   }
 
@@ -135,12 +139,15 @@ class SessionBloc extends BaseBloc<SessionEvent, SessionState>
       SessionForceUserSignInStarted event,
       Emitter<SessionState> emit,
       ) async {
+    showAppLoading();
     emit(SessionForceUserSignInInProgress(state));
     try {
       await _sessionInteractor.clearSessionDataAtLocal();
       emit(SessionForceUserSignInSuccess());
     } catch (err) {
       emit(SessionForceUserSignInFailure(state));
+    } finally {
+      hideAppLoading();
     }
   }
 

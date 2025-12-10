@@ -33,9 +33,8 @@ class SignUpBloc extends BaseBloc<SignUpEvent, SignUpState>
       SignUpSubmitted event,
       Emitter<SignUpState> emit,
       ) async {
-    emit(SignUpInProgress());
     showAppLoading();
-
+    emit(SignUpInProgress());
     try {
       final result = await _authInteractor.submitSignUp(
           email: event.email,

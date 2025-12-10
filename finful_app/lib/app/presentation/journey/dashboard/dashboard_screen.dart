@@ -202,9 +202,6 @@ class _DashboardScreenState extends State<DashboardScreen>
       case SessionForceUserSignInSuccess:
         router.replaceWithSignIn();
         break;
-      case SessionSignOutSuccess:
-        router.replaceWithSignIn();
-        break;
       default:
     }
   }

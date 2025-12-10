@@ -4,9 +4,11 @@ import 'package:finful_app/app/domain/interactor/section_interactor.dart';
 import 'package:finful_app/app/domain/model/extension/extension.dart';
 import 'package:finful_app/app/domain/model/section_model.dart';
 import 'package:finful_app/app/presentation/blocs/mixins/loader_bloc_mixin.dart';
+import 'package:finful_app/app/presentation/blocs/mixins/session_bloc_mixin.dart';
 import 'package:finful_app/app/presentation/blocs/mixins/show_message_mixin.dart';
 import 'package:finful_app/core/bloc/base/base_bloc.dart';
 import 'package:finful_app/core/bloc/base/bloc_manager.dart';
+import 'package:finful_app/core/exception/api_exception.dart';
 import 'package:finful_app/core/extension/extension.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +17,7 @@ import 'spending_event.dart';
 import 'spending_state.dart';
 
 class SpendingBloc extends BaseBloc<SpendingEvent, SpendingState>
-    with LoaderBlocMixin, ShowMessageBlocMixin {
+    with LoaderBlocMixin, ShowMessageBlocMixin, SessionBlocMixin {
   late final SectionInteractor _sectionInteractor;
   late final PlanInteractor _planInteractor;
 
@@ -148,6 +150,9 @@ class SpendingBloc extends BaseBloc<SpendingEvent, SpendingState>
         state: state,
         failedType: SpendingCalculateFailureType.api,
       ));
+      if (err is UnauthorisedException) {
+        forceUserToLogin401();
+      }
     }
   }
 }

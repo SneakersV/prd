@@ -1,5 +1,6 @@
 import 'package:finful_app/app/constants/images.dart';
 import 'package:finful_app/app/constants/key/BlocConstants.dart';
+import 'package:finful_app/app/data/enum/section.dart';
 import 'package:finful_app/app/presentation/blocs/section/onboarding/onboarding.dart';
 import 'package:finful_app/app/presentation/widgets/app_button/FinfulButton.dart';
 import 'package:finful_app/app/presentation/widgets/app_image/FinfulImage.dart';
@@ -18,14 +19,12 @@ import 'package:lottie/lottie.dart';
 class EducationContentView extends StatefulWidget {
   const EducationContentView({
     super.key,
-    this.showDivider = false,
     required this.title,
     required this.description,
     required this.url,
     this.isLast = false,
   });
 
-  final bool showDivider;
   final String? title;
   final String? description;
   final String? url;
@@ -65,16 +64,6 @@ class _EducationContentViewState extends State<EducationContentView>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // if (widget.showDivider) Container(
-          //   decoration: BoxDecoration(
-          //     color: FinfulColor.divider,
-          //   ),
-          //   width: double.infinity,
-          //   height: Dimens.p_3,
-          //   margin: EdgeInsets.only(
-          //     bottom: Dimens.p_23,
-          //   ),
-          // ) else const SizedBox(),
           if (widget.title.isNotNullAndEmpty)
             Padding(
               padding: EdgeInsets.only(
@@ -115,8 +104,8 @@ class _EducationContentViewState extends State<EducationContentView>
               widget.url!,
               controller: _controller,
               width: context.queryWidth,
-              height: context.queryWidth * 1.3,
-              fit: BoxFit.fill,
+              height: context.queryWidth,
+              fit: BoxFit.contain,
               onLoaded: (composition) {
                 _controller
                   ..duration = composition.duration
@@ -126,9 +115,18 @@ class _EducationContentViewState extends State<EducationContentView>
           if (widget.isLast)
             BlocBuilder<OnboardingBloc, OnboardingState>(
               builder: (_, state) {
+                String btnCtaTitle = L10n.of(context)
+                    .translate('common_cta_continue');
+                final currentSection = state.sectionOnboardings.last;
+                final stepType = SectionStepTypeExt.fromValue(
+                    currentSection.section.stepType);
+                final ctaText = currentSection.section.payload?.ctaText ?? "";
+                if (stepType == SectionStepType.education && ctaText.isNotEmpty) {
+                  btnCtaTitle = ctaText;
+                }
+
                 return FinfulButton.secondary(
-                  title: L10n.of(context)
-                      .translate('common_cta_continue'),
+                  title: btnCtaTitle,
                   onPressed: () {
                     final nextStep = state.sectionOnboardings.length + 1;
                     BlocManager().event<OnboardingBloc>(

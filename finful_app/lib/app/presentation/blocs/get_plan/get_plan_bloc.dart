@@ -2,12 +2,15 @@ import 'package:finful_app/app/constants/key/BlocConstants.dart';
 import 'package:finful_app/app/domain/interactor/plan_interactor.dart';
 import 'package:finful_app/app/presentation/blocs/get_plan/get_plan_event.dart';
 import 'package:finful_app/app/presentation/blocs/get_plan/get_plan_state.dart';
+import 'package:finful_app/app/presentation/blocs/mixins/session_bloc_mixin.dart';
 import 'package:finful_app/core/bloc/base/base_bloc.dart';
 import 'package:finful_app/core/bloc/base/bloc_manager.dart';
+import 'package:finful_app/core/exception/api_exception.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class GetPlanBloc extends BaseBloc<GetPlanEvent, GetPlanState> {
+class GetPlanBloc extends BaseBloc<GetPlanEvent, GetPlanState>
+  with SessionBlocMixin {
   late final PlanInteractor _planInteractor;
 
   GetPlanBloc(Key key, {
@@ -42,6 +45,9 @@ class GetPlanBloc extends BaseBloc<GetPlanEvent, GetPlanState> {
       }
     } catch(err) {
       emit(GetPlanGetCurrentPlanFailure(state));
+      if (err is UnauthorisedException) {
+        forceUserToLogin401();
+      }
     } finally {
       // broadcast
       // always to fetch latest section progress after call

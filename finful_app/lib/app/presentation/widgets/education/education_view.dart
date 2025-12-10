@@ -1,4 +1,6 @@
+import 'package:finful_app/app/domain/model/section_model.dart';
 import 'package:finful_app/app/presentation/blocs/get_education/get_education.dart';
+import 'package:finful_app/app/presentation/journey/section/onboarding/widgets/section_onboarding_education_first.dart';
 import 'package:finful_app/app/presentation/widgets/education/education_content_view.dart';
 import 'package:finful_app/core/extension/extension.dart';
 import 'package:finful_app/core/mixin/mixin.dart';
@@ -10,10 +12,12 @@ class EducationView extends StatefulWidget {
     super.key,
     required this.type,
     required this.location,
+    required this.currentSection,
   });
 
   final String type;
   final String location;
+  final SectionModel currentSection;
 
   @override
   State<EducationView> createState() => _EducationViewState();
@@ -43,16 +47,21 @@ class _EducationViewState extends State<EducationView>
   @override
   Widget build(BuildContext context) {
     return BlocProvider<GetEducationBloc>(
-      create: (_) => GetEducationBloc.instance()..add(GetEducationOnboardingStarted(
-        type: widget.type,
-        location: widget.location,
-      )),
+      create: (_) => GetEducationBloc.instance()
+        ..add(GetEducationOnboardingStarted(
+          type: widget.type,
+          location: widget.location,
+        )),
       child: BlocConsumer<GetEducationBloc, GetEducationState>(
         listener: (_, state) {
+
         },
         builder: (_, state) {
           if (state.onboardingEducations.isEmpty) {
-            return const SizedBox();
+            return SectionOnboardingEducationFirst(
+              currentSection: widget.currentSection,
+              showNextStepBtn: true,
+            );
           }
 
           return SizedBox(
@@ -62,22 +71,23 @@ class _EducationViewState extends State<EducationView>
               controller: _pageController,
               onPageChanged: (page) {
                 if (page != _currentPageIdx) {
-                  setState(() {
-                    _currentPageIdx = page;
-                  });
+                  _currentPageIdx = page;
                 }
+                setState(() {});
               },
-              children: state.onboardingEducations.map((data) {
-                final showDivider = data.title.isNotNullAndEmpty;
-
-                return EducationContentView(
-                  showDivider: showDivider,
-                  title: data.title,
-                  description: data.message,
-                  url: data.url,
-                  isLast: data.order == state.onboardingEducations.last.order,
-                );
-              }).toList(),
+              children: [
+                SectionOnboardingEducationFirst(
+                  currentSection: widget.currentSection,
+                  showNextStepBtn: false,
+                ),
+                for (final data in state.onboardingEducations)
+                  EducationContentView(
+                    title: data.title,
+                    description: data.message,
+                    url: data.url,
+                    isLast: data == state.onboardingEducations.last,
+                  ),
+              ],
             ),
           );
         },

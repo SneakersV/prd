@@ -1,5 +1,6 @@
 import 'package:finful_app/app/constants/icons.dart';
 import 'package:finful_app/app/constants/key/BlocConstants.dart';
+import 'package:finful_app/app/constants/lotties.dart';
 import 'package:finful_app/app/data/enum/section.dart';
 import 'package:finful_app/app/domain/model/extension/section_ext.dart';
 import 'package:finful_app/app/domain/model/section_model.dart';
@@ -26,7 +27,8 @@ import 'package:finful_app/core/localization/l10n.dart';
 import 'package:finful_app/core/presentation/base_screen_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:lottie/lottie.dart';
+import 'package:collection/collection.dart';
 import 'widgets/section_onboarding_qa_content.dart';
 
 class SectionOnboardingQAScreen extends StatefulWidget {
@@ -37,17 +39,20 @@ class SectionOnboardingQAScreen extends StatefulWidget {
 }
 
 class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
-    with BaseScreenMixin<SectionOnboardingQAScreen, SectionOnboardingQARouter>,
+    with TickerProviderStateMixin,
+        BaseScreenMixin<SectionOnboardingQAScreen, SectionOnboardingQARouter>,
         ShowMessageBlocMixin, SessionBlocMixin, OnboardingBlocMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FocusScopeNode _focusScopeNode = FocusScopeNode();
   late TextEditingController _inputController;
   final FocusNode _inputNode = FocusNode();
-  bool _showEducationView = false;
+  bool _showUserGuide = true;
+  late final AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(vsync: this);
     _inputController = TextEditingController();
   }
 
@@ -68,6 +73,7 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
     _focusScopeNode.dispose();
     _inputController.dispose();
     _inputNode.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -91,33 +97,11 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
   }
 
   void _processAfterFilledAnswer(OnboardingFillAnswerSuccess state) {
-    setState(() {
-      _showEducationView = false;
-    });
     final nextStep = state.sectionOnboardings.length + 1;
     BlocManager().event<OnboardingBloc>(
       BlocConstants.sectionOnboarding,
       OnboardingGetNextStepStarted(nextStep: nextStep),
     );
-  }
-
-  void _educationContinuePressed(OnboardingState state) {
-    final length = state.sectionOnboardings.length;
-    final typeIdx = length - 3;
-    final locationIdx = length - 2;
-    final type = state.sectionOnboardings[typeIdx].answerFilled?.answer;
-    final location = state.sectionOnboardings[locationIdx].answerFilled?.answer;
-    if (type != null && location != null) {
-      setState(() {
-        _showEducationView = true;
-      });
-    } else {
-      final nextStep = state.sectionOnboardings.length + 1;
-      BlocManager().event<OnboardingBloc>(
-        BlocConstants.sectionOnboarding,
-        OnboardingGetNextStepStarted(nextStep: nextStep),
-      );
-    }
   }
 
   void _onAnswerSelected(
@@ -157,8 +141,9 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
   }
 
   Future<void> _onBackPressed() async {
+    _controller.reset();
     setState(() {
-      _showEducationView = false;
+      _showUserGuide = true;
     });
     final state = getOnboardingState;
     if (state.sectionOnboardings.isEmpty) {
@@ -181,6 +166,19 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
       OnboardingGetPreviousStepStarted(),
     );
   }
+
+  Future<LottieComposition?> customDecoder(List<int> bytes) {
+    return LottieComposition.decodeZip(
+      bytes,
+      filePicker: (files) {
+        return files.firstWhereOrNull((f) =>
+        f.name.startsWith('animations/') &&
+            f.name.endsWith('.json'),
+        );
+      },
+    );
+  }
+
 
   void _processSubmitCalculate() {
     BlocManager().event<OnboardingBloc>(
@@ -284,12 +282,8 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
   }
 
   String _headerTitleText() {
-    if (!_showEducationView) {
-      return L10n.of(context)
-          .translate('section_onboarding_qa_header_title');
-    }
-
-    return '';
+    return L10n.of(context)
+        .translate('section_onboarding_qa_header_title');
   }
 
   @override
@@ -303,222 +297,301 @@ class _SectionOnboardingQAScreenState extends State<SectionOnboardingQAScreen>
 
           _onBackPressed();
         },
-        child: Scaffold(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          resizeToAvoidBottomInset: true,
-          appBar: FinfulAppBar(
-            backgroundColor: Colors.transparent,
-            forceMaterialTransparency: true,
-            title: _headerTitleText(),
-            titleStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-            leadingIcon: AppSvgIcon(
-              IconConstants.icBack,
-              width: FinfulDimens.iconMd,
-              height: FinfulDimens.iconMd,
-              color: FinfulColor.white,
-            ),
-            onLeadingPressed: _onBackPressed,
-          ),
-          body: GestureDetector(
-            onTap: _handleUnFocus,
-            child: Form(
-              key: _formKey,
-              child: FocusScope(
-                node: _focusScopeNode,
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: CustomScrollView(
-                        slivers: [
-                          if (!_showEducationView)
-                            SliverPadding(
-                              padding: EdgeInsets.only(
-                                top: Dimens.p_4,
-                              ),
-                              sliver: SliverToBoxAdapter(
-                                child: BlocBuilder<OnboardingBloc, OnboardingState>(
-                                  builder: (_, state) {
-                                    if (state.sectionOnboardings.isEmpty) {
-                                      return const SizedBox();
-                                    }
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Scaffold(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                resizeToAvoidBottomInset: true,
+                appBar: FinfulAppBar(
+                  backgroundColor: Colors.transparent,
+                  forceMaterialTransparency: true,
+                  title: _headerTitleText(),
+                  titleStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+                  leadingIcon: AppSvgIcon(
+                    IconConstants.icBack,
+                    width: FinfulDimens.iconMd,
+                    height: FinfulDimens.iconMd,
+                    color: FinfulColor.white,
+                  ),
+                  onLeadingPressed: _onBackPressed,
+                ),
+                body: GestureDetector(
+                  onTap: _handleUnFocus,
+                  child: Form(
+                    key: _formKey,
+                    child: FocusScope(
+                      node: _focusScopeNode,
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: CustomScrollView(
+                              slivers: [
+                                SliverPadding(
+                                  padding: EdgeInsets.only(
+                                    top: Dimens.p_4,
+                                  ),
+                                  sliver: SliverToBoxAdapter(
+                                    child: BlocBuilder<OnboardingBloc, OnboardingState>(
+                                      builder: (_, state) {
+                                        if (state.sectionOnboardings.isEmpty) {
+                                          return const SizedBox();
+                                        }
 
-                                    final currentSection = state.sectionOnboardings.last;
-                                    final currentStep = currentSection.section.currentStep;
-                                    final totalStep = currentSection.section.totalStep;
+                                        final currentSection = state.sectionOnboardings.last;
+                                        final currentStep = currentSection.section.currentStep;
+                                        final totalStep = currentSection.section.totalStep;
 
-                                    if (currentStep == null ||
-                                        totalStep == null) {
-                                      return const SizedBox();
-                                    }
+                                        if (currentStep == null ||
+                                            totalStep == null) {
+                                          return const SizedBox();
+                                        }
 
-                                    final stepType = SectionStepTypeExt.fromValue(
-                                        currentSection.section.stepType);
-                                    if (stepType == SectionStepType.Final) {
-                                      return const SizedBox();
-                                    }
+                                        final stepType = SectionStepTypeExt.fromValue(
+                                            currentSection.section.stepType);
+                                        if (stepType == SectionStepType.Final) {
+                                          return const SizedBox();
+                                        } else if (stepType == SectionStepType.education) {
+                                          return const SizedBox();
+                                        }
 
-                                    return SectionProgressBar(
-                                      current: currentStep - 1,
-                                      total: totalStep,
-                                    );
-                                  },
+                                        return SectionProgressBar(
+                                          current: currentStep - 1,
+                                          total: totalStep,
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            )
-                          else const SliverToBoxAdapter(
-                            child: SizedBox(),
-                          ),
-                          SliverPadding(
-                            padding: EdgeInsets.only(
-                              top: Dimens.p_56,
-                              bottom: Dimens.p_64 + context.queryPaddingBottom,
+                                SliverPadding(
+                                  padding: EdgeInsets.only(
+                                    top: Dimens.p_56,
+                                    bottom: Dimens.p_64 + context.queryPaddingBottom,
+                                  ),
+                                  sliver: SliverToBoxAdapter(
+                                    child: SectionOnboardingQAContent(
+                                      inputController: _inputController,
+                                      inputNode: _inputNode,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            sliver: SliverToBoxAdapter(
-                              child: SectionOnboardingQAContent(
-                                inputController: _inputController,
-                                inputNode: _inputNode,
-                                showEducationView: _showEducationView,
-                              ),
+                          ),
+                          Positioned(
+                            bottom: Dimens.p_0,
+                            left: Dimens.p_0,
+                            right: Dimens.p_0,
+                            child: BlocBuilder<OnboardingBloc, OnboardingState>(
+                              builder: (_, state) {
+                                if (state.sectionOnboardings.isEmpty) {
+                                  return const SizedBox();
+                                }
+
+                                final currentSection = state.sectionOnboardings.last;
+                                final quesType = SectionQuestionTypeExt.fromValue(
+                                    currentSection.section.payload?.questionType);
+                                final stepType = SectionStepTypeExt.fromValue(
+                                    currentSection.section.stepType);
+                                final currentStep = currentSection.section.currentStep;
+                                final totalStep = currentSection.section.totalStep;
+                                final questionKey = currentSection.section.payload?.key;
+                                final unit = currentSection.section.payload?.unit;
+
+                                if (stepType == SectionStepType.Final) {
+                                  if (state is OnboardingCalculateInProgress) {
+                                    return const SizedBox();
+                                  }
+
+                                  if (state is OnboardingCalculateSuccess) {
+                                    String discoveryTxt = L10n.of(context)
+                                        .translate('common_cta_discovery_btn');
+                                    String backDashboardTxt = L10n.of(context)
+                                        .translate('common_cta_back_dashboard_btn');
+                                    return Container(
+                                      color: Theme.of(context).scaffoldBackgroundColor,
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: FinfulDimens.md,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          FinfulButton.secondary(
+                                            title: router.entryFrom == SectionOnboardingEntryFrom.dashboard
+                                                ? backDashboardTxt : discoveryTxt,
+                                            onPressed: () {
+                                              _onCalculateResultPressed();
+                                            },
+                                          ),
+                                          const SizedBox(height: Dimens.p_18),
+                                          SizedBox(
+                                            height: Dimens.p_12 + context.queryPaddingBottom,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
+
+                                  return const SizedBox();
+                                }
+
+                                if (stepType == SectionStepType.education) {
+                                  return const SizedBox();
+                                }
+
+                                if (currentStep == totalStep) {
+                                  return Container(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: FinfulDimens.md,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        FinfulButton.primary(
+                                          title: L10n.of(context)
+                                              .translate('section_onboarding_cta_final_btn'),
+                                          isLoading: state is OnboardingCalculateInProgress,
+                                          onPressed: () {
+                                            if (stepType == SectionStepType.question) {
+                                              _onAnswerSelected(questionKey, quesType, unit);
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(height: Dimens.p_12),
+                                        SizedBox(
+                                          height: Dimens.p_12 + context.queryPaddingBottom,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+
+                                if (quesType == SectionQuestionType.number) {
+                                  return Container(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: FinfulDimens.md,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        FinfulButton.secondary(
+                                          title: L10n.of(context)
+                                              .translate('common_cta_continue'),
+                                          onPressed: () {
+                                            if (stepType == SectionStepType.question) {
+                                              _onAnswerSelected(questionKey, quesType, unit);
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(height: Dimens.p_12),
+                                        SizedBox(
+                                          height: Dimens.p_12 + context.queryPaddingBottom,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+
+                                return const SizedBox();
+                              },
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Positioned(
-                      bottom: Dimens.p_0,
-                      left: Dimens.p_0,
-                      right: Dimens.p_0,
-                      child: BlocBuilder<OnboardingBloc, OnboardingState>(
-                        builder: (_, state) {
-                          if (state.sectionOnboardings.isEmpty) {
-                            return const SizedBox();
-                          }
-
-                          final currentSection = state.sectionOnboardings.last;
-                          final quesType = SectionQuestionTypeExt.fromValue(
-                              currentSection.section.payload?.questionType);
-                          final stepType = SectionStepTypeExt.fromValue(
-                              currentSection.section.stepType);
-                          final currentStep = currentSection.section.currentStep;
-                          final totalStep = currentSection.section.totalStep;
-                          final questionKey = currentSection.section.payload?.key;
-                          final unit = currentSection.section.payload?.unit;
-
-                          if (stepType == SectionStepType.Final) {
-                            if (state is OnboardingCalculateInProgress) {
-                              return const SizedBox();
-                            }
-
-                            if (state is OnboardingCalculateSuccess) {
-                              String discoveryTxt = L10n.of(context)
-                                  .translate('common_cta_discovery_btn');
-                              String backDashboardTxt = L10n.of(context)
-                                  .translate('common_cta_back_dashboard_btn');
-                              return Container(
-                                color: Theme.of(context).scaffoldBackgroundColor,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: FinfulDimens.md,
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    FinfulButton.secondary(
-                                      title: router.entryFrom == SectionOnboardingEntryFrom.dashboard
-                                          ? backDashboardTxt : discoveryTxt,
-                                      onPressed: () {
-                                        _onCalculateResultPressed();
-                                      },
-                                    ),
-                                    const SizedBox(height: Dimens.p_18),
-                                    SizedBox(
-                                      height: Dimens.p_12 + context.queryPaddingBottom,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }
-
-                            return const SizedBox();
-                          }
-
-                          if (currentStep == totalStep) {
-                            return Container(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: FinfulDimens.md,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  FinfulButton.primary(
-                                    title: L10n.of(context)
-                                        .translate('section_onboarding_cta_final_btn'),
-                                    isLoading: state is OnboardingCalculateInProgress,
-                                    onPressed: () {
-                                      if (stepType == SectionStepType.education) {
-                                        _educationContinuePressed(state);
-                                      } else if (stepType == SectionStepType.question) {
-                                        _onAnswerSelected(questionKey, quesType, unit);
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(height: Dimens.p_12),
-                                  SizedBox(
-                                    height: Dimens.p_12 + context.queryPaddingBottom,
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-
-                          if (!_showEducationView && (
-                              stepType == SectionStepType.education ||
-                                  quesType == SectionQuestionType.number
-                          )) {
-                            final ctaText = currentSection.section.payload?.ctaText ?? "";
-                            String btnCtaTitle = L10n.of(context)
-                                .translate('common_cta_continue');
-                            if (stepType == SectionStepType.education && ctaText.isNotEmpty) {
-                              btnCtaTitle = ctaText;
-                            }
-                            return Container(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: FinfulDimens.md,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  FinfulButton.secondary(
-                                    title: btnCtaTitle,
-                                    onPressed: () {
-                                      if (stepType == SectionStepType.education) {
-                                        _educationContinuePressed(state);
-                                      } else if (stepType == SectionStepType.question) {
-                                        _onAnswerSelected(questionKey, quesType, unit);
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(height: Dimens.p_12),
-                                  SizedBox(
-                                    height: Dimens.p_12 + context.queryPaddingBottom,
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-
-                          return const SizedBox();
-                        },
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
+            // user guide
+            BlocBuilder<OnboardingBloc, OnboardingState>(
+              builder: (_, state) {
+                final currentSection = state.sectionOnboardings.isNotEmpty
+                    ? state.sectionOnboardings.last : null;
+                final stepType = SectionStepTypeExt.fromValue(currentSection?.section.stepType);
+                if (_showUserGuide && stepType == SectionStepType.education) {
+                  return Positioned.fill(
+                    child: GestureDetector(
+                      onHorizontalDragEnd: (DragEndDetails details) {
+                        print('primaryVelocity--->${details.primaryVelocity}');
+                        if (details.primaryVelocity! < -200) {
+                          if (_showUserGuide) {
+                            setState(() {
+                              _showUserGuide = false;
+                            });
+                          }
+                        }
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: FinfulColor.userGuideBg,
+                        child: Center(
+                          child: Container(
+                            width: Dimens.p_150,
+                            height: Dimens.p_200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(Dimens.p_10)),
+                              border: Border.all(
+                                width: Dimens.p_1,
+                                color: FinfulColor.white,
+                                style: BorderStyle.solid,
+                              ),
+                              color: FinfulColor.userGuideCardBg,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Expanded(
+                                  child: Lottie.asset(
+                                    LottieConstants.educationUserGuide,
+                                    controller: _controller,
+                                    width: double.infinity,
+                                    height: Dimens.p_57,
+                                    fit: BoxFit.contain,
+                                    decoder: customDecoder,
+                                    onLoaded: (composition) {
+                                      _controller
+                                        ..duration = composition.duration
+                                        ..repeat();
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      top: Dimens.p_29,
+                                      left: Dimens.p_10,
+                                      right: Dimens.p_10,
+                                    ),
+                                    child: Text(
+                                      "Vuốt sang trái để chuyển sang trang tiếp theo",
+                                      style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
+                return Positioned.fill(
+                  child: SizedBox(),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

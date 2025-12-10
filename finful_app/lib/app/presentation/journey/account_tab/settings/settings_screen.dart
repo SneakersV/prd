@@ -2,6 +2,7 @@ import 'package:finful_app/app/constants/icons.dart';
 import 'package:finful_app/app/constants/images.dart';
 import 'package:finful_app/app/constants/key/BlocConstants.dart';
 import 'package:finful_app/app/domain/model/extension/user_ext.dart';
+import 'package:finful_app/app/presentation/blocs/account_tab/account_tab.dart';
 import 'package:finful_app/app/presentation/blocs/common/session/session.dart';
 import 'package:finful_app/app/presentation/journey/account_tab/settings/settings_router.dart';
 import 'package:finful_app/app/presentation/widgets/app_image/FinfulImage.dart';
@@ -193,6 +194,13 @@ class _SettingsScreenState extends State<SettingsScreen>
     BlocManager().event<SessionBloc>(
       BlocConstants.session,
       SessionUserLogOutSubmitted(),
+    );
+  }
+
+  void _onDeleteAccountPressed() {
+    BlocManager().event<AccountTabBloc>(
+      BlocConstants.accountTabBar,
+      AccountTabDeleteAccountSubmitted(),
     );
   }
 
@@ -388,9 +396,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                           title: L10n.of(context)
                               .translate('setting_tile_account_header_deleteAccount'),
                           showIcon: false,
-                          onPressed: () {
-
-                          },
+                          onPressed: _onDeleteAccountPressed,
                         ),
                       ],
                     ),

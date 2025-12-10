@@ -144,6 +144,7 @@ class SectionPayloadResponse extends BaseEntity {
   final List<SectionPayloadExplanationResponse>? explanations; // assumptions
   final int? min; // assumptions
   final int? max; // assumptions
+  final int? defaultValue; // assumptions charts
   final String? step; // assumptions
   final String? suffix; // assumptions
   final bool? isCustom; // assumptions - "chartDataKey": "pctInvestmentReturn"
@@ -166,6 +167,7 @@ class SectionPayloadResponse extends BaseEntity {
     this.explanations,
     this.min,
     this.max,
+    this.defaultValue,
     this.step,
     this.suffix,
     this.isCustom,
@@ -216,6 +218,7 @@ class SectionPayloadResponse extends BaseEntity {
       explanations: explanations,
       min: json['min'] ?? kInt,
       max: json['max'] ?? kInt,
+      defaultValue: json['defaultValue'] ?? kInt,
       step: step,
       suffix: json['suffix'] ?? kString,
       isCustom: json['isCustom'] ?? false,

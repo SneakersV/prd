@@ -26,12 +26,14 @@ class SectionAssumptionsQAContent extends StatelessWidget {
     required this.onSliderValueChanged,
     required this.radioValueSelected,
     required this.onRadioValueChanged,
+    required this.hasUserChanged,
   });
 
   final int sliderValueSelected;
   final Function(int value) onSliderValueChanged;
   final SectionPayloadOptionResponse? radioValueSelected;
   final Function(SectionPayloadOptionResponse option) onRadioValueChanged;
+  final bool hasUserChanged;
 
   int? getDivisions(double min, double max) {
     final diff = (max - min).abs();
@@ -39,9 +41,9 @@ class SectionAssumptionsQAContent extends StatelessWidget {
     return diff.toInt();
   }
 
-  List<FlSpot> allSpots(bool isSalary) {
+  List<FlSpot> allSpots(bool isSalary, int chartDefaultValue) {
     final double dummy = isSalary ? 30000000 : 3000000000;
-    final double rate = sliderValueSelected / 100;  // phần trăm → tỷ lệ (0.02 cho 2%)
+    final double rate = chartDefaultValue / 100;  // phần trăm → tỷ lệ (0.02 cho 2%)
     // Năm hiện tại = dummy * (1 + rate)^0 = dummy
     // Năm ngoái = dummy / (1 + rate) nếu rate > 0, hoặc dummy nếu rate = 0
     // +1 = dummy * (1 + rate)
@@ -77,6 +79,19 @@ class SectionAssumptionsQAContent extends StatelessWidget {
     final chartLegendTitle = !isSalary ?
     L10n.of(context).translate('section_chart_dot_housePrice_label') :
     L10n.of(context).translate('section_chart_dot_salary_label');
+    int chartDefaultValue = 0;
+    if (!hasUserChanged) {
+      final defaultValue = data.section.payload?.defaultValue;
+      if (defaultValue != null && defaultValue > 0) {
+        chartDefaultValue = defaultValue;
+      }
+    } else {
+      if (showLineChart) {
+        chartDefaultValue = sliderValueSelected;
+      } else if (showBarChart) {
+        chartDefaultValue = sliderValueSelected;
+      }
+    }
 
     return Container(
       color: Colors.transparent,
@@ -133,11 +148,11 @@ class SectionAssumptionsQAContent extends StatelessWidget {
           ),
           const SizedBox(height: Dimens.p_34),
           if (showLineChart) SectionAssumptionsLineChart1(
-            spots: allSpots(isSalary),
+            spots: allSpots(isSalary, chartDefaultValue),
             title: chartLegendTitle,
           ) else const SizedBox(),
           if (showBarChart) SectionAssumptionsBarchart1(
-            sliderValueSelected: sliderValueSelected,
+            chartDefaultValue: chartDefaultValue,
           ) else const SizedBox(),
           const SizedBox(height: Dimens.p_40),
           if (listExplanations.isNotEmpty)

@@ -2,9 +2,7 @@ import 'package:finful_app/app/constants/key/BlocConstants.dart';
 import 'package:finful_app/app/data/enum/section.dart';
 import 'package:finful_app/app/data/model/response/section_response.dart';
 import 'package:finful_app/app/domain/model/section_model.dart';
-import 'package:finful_app/app/injection/injection.dart';
 import 'package:finful_app/app/presentation/blocs/section/onboarding/onboarding.dart';
-import 'package:finful_app/app/presentation/widgets/app_image/FinfulImage.dart';
 import 'package:finful_app/app/presentation/widgets/app_input/FinfulTextInput.dart';
 import 'package:finful_app/app/presentation/widgets/education/education_view.dart';
 import 'package:finful_app/app/presentation/widgets/section/section_option_card.dart';
@@ -18,21 +16,18 @@ import 'package:finful_app/core/extension/extension.dart';
 import 'package:finful_app/core/localization/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'education_content_tile.dart';
 import 'section_onboarding_calculate_result.dart';
+import 'section_onboarding_education_first.dart';
 
 class SectionOnboardingQAContent extends StatelessWidget {
   const SectionOnboardingQAContent({
     super.key,
     required this.inputController,
     required this.inputNode,
-    required this.showEducationView,
   });
 
   final TextEditingController inputController;
   final FocusNode inputNode;
-  final bool showEducationView;
 
   void _onAnswerSelected(
       String? questionKey,
@@ -177,73 +172,6 @@ class SectionOnboardingQAContent extends StatelessWidget {
     );
   }
 
-  Widget _renderEducationContent(BuildContext context, SectionModel data) {
-    final payload = data.section.payload;
-
-    if (payload == null) {
-      return const SizedBox();
-    }
-
-    final contentData = payload.points;
-    final showContent = contentData != null && contentData.isNotEmpty;
-    return Container(
-      color: Colors.transparent,
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        horizontal: FinfulDimens.md,
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: Dimens.p_80,
-            ),
-            child: Text(
-              payload.title ?? "",
-              style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: Dimens.p_35,
-            ),
-            child: Text(
-              payload.summary ?? "",
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                fontWeight: FontWeight.w400,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          if (payload.image.isNotNullAndEmpty)
-            FinfulImage(
-              type: FinfulImageType.network,
-              source: payload.image!.getNormalImageUrlFromHost(Injection().getMediaHost),
-              width: mediaWidth(context),
-              height: mediaHeight(context),
-            ) else const SizedBox(),
-          const SizedBox(height: Dimens.p_30),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (showContent) ...[
-                for (var entry in contentData.entries)
-                  EducationContentTile(
-                    title: entry.key.toString(),
-                    description: entry.value.toString(),
-                  ),
-              ] else const SizedBox(),
-            ],
-          ),
-          SizedBox(height: Dimens.p_64 + context.queryPaddingBottom),
-        ],
-      ),
-    );
-  }
-
   Widget _renderContent(
       BuildContext context,
       SectionModel data,
@@ -264,10 +192,6 @@ class SectionOnboardingQAContent extends StatelessWidget {
             return const SizedBox();
         }
       } else if (stepType == SectionStepType.education) {
-        if (!showEducationView) {
-          return _renderEducationContent(context, data);
-        }
-
         final length = state.sectionOnboardings.length;
         final typeIdx = length - 3;
         final locationIdx = length - 2;
@@ -277,9 +201,14 @@ class SectionOnboardingQAContent extends StatelessWidget {
           return EducationView(
             type: type,
             location: location,
+            currentSection: data,
           );
         }
-        return const SizedBox();
+
+        return SectionOnboardingEducationFirst(
+          currentSection: data,
+          showNextStepBtn: true,
+        );
       } else if (stepType == SectionStepType.Final) {
         return SectionOnboardingCalculateResult();
       } else {
@@ -287,10 +216,6 @@ class SectionOnboardingQAContent extends StatelessWidget {
       }
     }
   }
-
-  double mediaWidth(BuildContext context) => context.queryWidth;
-
-  double mediaHeight(BuildContext context) => mediaWidth(context) * 9 / 16;
 
   @override
   Widget build(BuildContext context) {

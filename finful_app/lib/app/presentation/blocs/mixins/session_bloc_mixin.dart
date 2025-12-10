@@ -11,6 +11,20 @@ mixin SessionBlocMixin {
     );
   }
 
+  void forceUserToLogin401() {
+    BlocManager().event<SessionBloc>(
+      BlocConstants.session,
+      SessionForceUserSignInStarted(),
+    );
+  }
+
+  void forceUserToLoginAfterLogoutOrDeleteAccountSucceed() {
+    BlocManager().event<SessionBloc>(
+      BlocConstants.session,
+      SessionForceUserSignInStarted(),
+    );
+  }
+
   SessionState get getSessionState {
     return BlocManager().blocFromKey<SessionBloc>(
         BlocConstants.session)!.state;

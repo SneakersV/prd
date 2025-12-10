@@ -40,8 +40,8 @@ class SignInBloc extends BaseBloc<SignInEvent, SignInState>
       SignInSubmitted event,
       Emitter<SignInState> emit,
       ) async {
-    emit(SignInInProgress());
     showAppLoading();
+    emit(SignInInProgress());
     try {
       final result = await _authInteractor.submitSignIn(
           email: event.email,

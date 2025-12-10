@@ -112,6 +112,9 @@ class FinfulColor {
   static const Color blackBaseSkeletonColor = Color(0xFF1E1E1E);
   static const Color blackHighLightSkeletonColor = Color(0xFF333333);
 
+  static final Color userGuideBg = Color(0xFF333333).withValues(alpha: 0.6);
+  static final Color userGuideCardBg = Color(0xFF333333).withValues(alpha: 0.8);
+
   // chart
   static final Color dotGlowLayer1 = brandPrimary.withValues(alpha: 0.25);
   static final Color lineChartText = white.withValues(alpha: 0.8);

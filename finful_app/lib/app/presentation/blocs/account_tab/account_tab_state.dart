@@ -27,3 +27,21 @@ class AccountTabGetUserExtraInfoSuccess extends AccountTabState {
 }
 
 class AccountTabGetUserExtraInfoFailure extends AccountTabState {}
+
+class AccountTabDeleteAccountInProgress extends AccountTabState {
+  AccountTabDeleteAccountInProgress(AccountTabState state) : super(
+    loggedInUserExtraInfo: state.loggedInUserExtraInfo,
+  );
+}
+
+class AccountTabDeleteAccountSuccess extends AccountTabState {
+  const AccountTabDeleteAccountSuccess() : super(
+    loggedInUserExtraInfo: null,
+  );
+}
+
+class AccountTabDeleteAccountFailure extends AccountTabState {
+  AccountTabDeleteAccountFailure(AccountTabState state) : super(
+    loggedInUserExtraInfo: state.loggedInUserExtraInfo,
+  );
+}

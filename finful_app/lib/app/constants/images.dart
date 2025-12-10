@@ -57,4 +57,5 @@ class ImageConstants {
   static const String imgBarChartDot = 'assets/images/img_bar_chart_dot.png';
 
   static const String imgSettings = 'assets/images/img_settings.png';
+  static const String imgBackhand = 'assets/images/img_back_hand.png';
 }

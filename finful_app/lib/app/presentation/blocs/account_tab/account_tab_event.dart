@@ -6,3 +6,7 @@ abstract class AccountTabEvent {
 class AccountTabGetUserExtraInfoStarted extends AccountTabEvent {
 
 }
+
+class AccountTabDeleteAccountSubmitted extends AccountTabEvent {
+
+}
